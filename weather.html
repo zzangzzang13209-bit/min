@@ -8,102 +8,94 @@
   @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700;900&display=swap');
   :root {
     --bg:#f2f4f8;--white:#fff;--green:#00C73C;--red:#F45452;--blue:#4A90D9;--orange:#FF8C00;
-    --sea:#daeaf6;--land:#e8f5e9;--land-nk:#e0e0e0;--land-jp:#f5ecd7;--land-cn:#ece6da;
-    --stroke:#a5d6a7;--stroke-nk:#bbb;--stroke-jp:#d4c9a8;
-    --text:#333;--text-l:#999;--border:#e0e3e8;--sans:'Noto Sans KR',-apple-system,sans-serif;
+    --sea:#e4eff8;--land:#f0f7f0;--land-nk:#e8e8e8;--land-jp:#f5f0e4;--land-cn:#ede8de;
+    --stroke-sk:#8bc6a0;--stroke-nk:#c0c0c0;--stroke-jp:#d4c9a8;--stroke-cn:#ccc;
+    --text:#333;--tl:#999;--border:#e0e3e8;--sans:'Noto Sans KR',-apple-system,sans-serif;
   }
   *{margin:0;padding:0;box-sizing:border-box}
   html,body{font-family:var(--sans);background:var(--bg);color:var(--text);height:100%;overflow:hidden}
   .page{display:flex;flex-direction:column;height:100vh;max-width:1400px;margin:0 auto}
 
-  /* Header */
   .hd{background:var(--white);border-bottom:2px solid var(--green);padding:.45rem 1rem;display:flex;align-items:center;justify-content:space-between;flex-shrink:0}
   .hd h1{font-size:1rem;font-weight:900} .hd h1 span{color:var(--green)}
-  .hd-date{font-size:.7rem;color:var(--text-l);margin-left:.6rem}
+  .hd-date{font-size:.7rem;color:var(--tl);margin-left:.6rem}
   .hd-link{font-size:.7rem;color:var(--green);text-decoration:none;font-weight:600}
 
   .main{flex:1;display:flex;overflow:hidden;min-height:0}
 
   /* Left Panel */
-  .lp{width:255px;flex-shrink:0;background:var(--white);border-right:1px solid var(--border);overflow-y:auto}
-  .lp-s{padding:.7rem .8rem;border-bottom:1px solid var(--border)}
-  .lp-t{font-size:.65rem;font-weight:700;color:var(--text-l);letter-spacing:.03em;margin-bottom:.5rem;display:flex;align-items:center;gap:.3rem}
-
-  /* Alert */
-  .al{background:#fff8f0;border:1px solid #ffe0b2;border-radius:7px;padding:.5rem .6rem;margin-bottom:.35rem}
+  .lp{width:250px;flex-shrink:0;background:var(--white);border-right:1px solid var(--border);overflow-y:auto}
+  .lp-s{padding:.65rem .75rem;border-bottom:1px solid var(--border)}
+  .lp-t{font-size:.63rem;font-weight:700;color:var(--tl);letter-spacing:.03em;margin-bottom:.45rem;display:flex;align-items:center;gap:.25rem}
+  .al{background:#fff8f0;border:1px solid #ffe0b2;border-radius:7px;padding:.45rem .55rem;margin-bottom:.3rem}
   .al:last-child{margin-bottom:0}
-  .al-b{display:inline-block;font-size:.58rem;font-weight:700;color:#fff;padding:.12em .45em;border-radius:5px;margin-right:.25rem}
+  .al-b{display:inline-block;font-size:.56rem;font-weight:700;color:#fff;padding:.1em .4em;border-radius:4px;margin-right:.2rem}
   .al-b.w{background:var(--orange)} .al-b.c{background:var(--blue)}
-  .al-tx{font-size:.72rem;color:#555;line-height:1.5;margin-top:.2rem}
+  .al-tx{font-size:.68rem;color:#666;line-height:1.45;margin-top:.15rem}
 
-  /* City detail (shown on click) */
-  .cd{display:none}
-  .cd.active{display:block}
-  .cd-hero{text-align:center;padding:.8rem 0}
-  .cd-city{font-size:.82rem;font-weight:500;color:var(--text-l)}
-  .cd-icon{font-size:2.5rem;margin:.2rem 0}
-  .cd-temp{font-size:2.8rem;font-weight:900;color:var(--text);line-height:1}
-  .cd-cond{font-size:.85rem;color:#555;margin:.2rem 0}
-  .cd-range{font-size:.8rem;color:var(--text-l)}
+  /* City detail */
+  .cd-hero{text-align:center;padding:.6rem 0}
+  .cd-city{font-size:.78rem;font-weight:500;color:var(--tl)}
+  .cd-icon{font-size:2.2rem;margin:.15rem 0}
+  .cd-temp{font-size:2.5rem;font-weight:900;line-height:1}
+  .cd-cond{font-size:.82rem;color:#555;margin:.15rem 0}
+  .cd-range{font-size:.75rem;color:var(--tl)}
   .cd-range .hi{color:var(--red);font-weight:700} .cd-range .lo{color:var(--blue);font-weight:600}
-  .cd-hint{font-size:.65rem;color:var(--text-l);text-align:center;padding:.5rem;cursor:pointer}
-  .cd-hint:hover{color:var(--green)}
+  #cd-back{font-size:.62rem;color:var(--tl);text-align:center;padding:.3rem;cursor:pointer;display:none}
+  #cd-back:hover{color:var(--green)}
 
-  /* Info grid */
-  .ig{display:grid;grid-template-columns:1fr 1fr;gap:.35rem}
-  .ig-i{background:#f7f8fa;border-radius:7px;padding:.45rem .5rem;text-align:center}
-  .ig-l{font-size:.58rem;color:var(--text-l);margin-bottom:.15rem}
-  .ig-v{font-size:.92rem;font-weight:900;color:var(--text)}
-  .ig-s{font-size:.55rem;color:var(--text-l)}
-
-  /* Air */
-  .am{display:flex;gap:.35rem}
-  .ac{flex:1;background:#f7f8fa;border-radius:7px;padding:.4rem;text-align:center}
-  .ac-l{font-size:.58rem;color:var(--text-l)}
-  .ac-v{font-size:.85rem;font-weight:900;margin:.1rem 0}
-  .ac-b{font-size:.55rem;font-weight:700;color:#fff;padding:.1em .4em;border-radius:5px;background:var(--green)}
-
-  /* Sun */
+  .ig{display:grid;grid-template-columns:1fr 1fr;gap:.3rem}
+  .ig-i{background:#f7f8fa;border-radius:6px;padding:.4rem;text-align:center}
+  .ig-l{font-size:.56rem;color:var(--tl);margin-bottom:.1rem}
+  .ig-v{font-size:.85rem;font-weight:900}
+  .ig-s{font-size:.52rem;color:var(--tl)}
+  .am{display:flex;gap:.3rem}
+  .ac{flex:1;background:#f7f8fa;border-radius:6px;padding:.4rem;text-align:center}
+  .ac-l{font-size:.56rem;color:var(--tl)}
+  .ac-v{font-size:.8rem;font-weight:900;margin:.08rem 0}
+  .ac-badge{font-size:.52rem;font-weight:700;color:#fff;padding:.08em .35em;border-radius:4px;background:var(--green)}
   .sn{display:flex;justify-content:space-around;text-align:center}
-  .sn-i{font-size:1rem} .sn-l{font-size:.55rem;color:var(--text-l)} .sn-t{font-size:.8rem;font-weight:700}
+  .sn-i{font-size:.95rem} .sn-l{font-size:.52rem;color:var(--tl)} .sn-t{font-size:.78rem;font-weight:700}
 
   /* Map */
-  .mp{flex:1;display:flex;align-items:center;justify-content:center;background:var(--sea);position:relative;overflow:hidden}
-  .mw{position:relative;width:100%;height:100%;display:flex;align-items:center;justify-content:center}
-  .mw svg{width:88%;max-height:96%}
+  .mp{flex:1;background:var(--sea);position:relative;overflow:hidden;display:flex;align-items:center;justify-content:center}
+  .mp svg{width:92%;max-height:97%;filter:drop-shadow(0 1px 3px rgba(0,0,0,.08))}
 
-  /* City dots on map */
-  .dot{cursor:pointer;transition:transform .15s}
-  .dot:hover{transform:scale(1.2)}
-  .dot circle{transition:r .15s}
-  .dot.sel circle{r:7;fill:var(--green)}
-  .dot-temp{font-size:11px;font-weight:900;fill:var(--text);font-family:var(--sans)}
-  .dot-name{font-size:7.5px;fill:#777;font-family:var(--sans)}
-  .dot-icon{font-size:11px}
+  /* Map dots */
+  .dot{cursor:pointer}
+  .dot:hover .dot-bg{r:14;opacity:.15}
+  .dot.sel .dot-ring{r:8;stroke:var(--green);stroke-width:2;fill:none}
+  .dot-pt{fill:var(--red);filter:drop-shadow(0 1px 2px rgba(0,0,0,.2))}
+  .dot-bg{fill:var(--green);opacity:0;transition:all .15s}
+  .dot-ring{fill:none;stroke:transparent;stroke-width:0;transition:all .15s}
+  .dt{font-family:var(--sans);font-size:10.5px;font-weight:800;fill:#333}
+  .dn{font-family:var(--sans);font-size:7px;fill:#888;font-weight:500}
+  .di{font-size:10px}
+  .sea-label{font-family:var(--sans);font-size:9px;fill:#a0c4e0;letter-spacing:5px;font-weight:300}
+  .country-label{font-family:var(--sans);fill:#bbb;font-weight:400}
 
   /* Right Panel */
-  .rp{width:260px;flex-shrink:0;background:var(--white);border-left:1px solid var(--border);display:flex;flex-direction:column}
-  .rp-h{padding:.5rem .7rem;border-bottom:1px solid var(--border);font-size:.7rem;font-weight:700;background:#fafbfc}
+  .rp{width:255px;flex-shrink:0;background:var(--white);border-left:1px solid var(--border);display:flex;flex-direction:column}
+  .rp-h{padding:.5rem .7rem;border-bottom:1px solid var(--border);font-size:.68rem;font-weight:700;background:#fafbfc}
   .cl{flex:1;overflow-y:auto}
-  .cr{display:flex;align-items:center;padding:.4rem .7rem;border-bottom:1px solid #f2f3f5;cursor:pointer;transition:background .12s}
-  .cr:hover,.cr.sel{background:#eef9f0}
-  .cr.sel{border-left:3px solid var(--green)}
-  .cr-i{width:20px;font-size:.9rem}
-  .cr-n{width:36px;font-size:.75rem;font-weight:700}
-  .cr-t{width:28px;font-size:.82rem;font-weight:900;text-align:right}
-  .cr-bw{flex:1;display:flex;align-items:center;gap:.25rem;padding:0 .4rem}
-  .cr-lo{font-size:.6rem;color:var(--blue);font-weight:500;width:16px;text-align:right}
+  .cr{display:flex;align-items:center;padding:.38rem .65rem;border-bottom:1px solid #f2f3f5;cursor:pointer;transition:background .12s;border-left:3px solid transparent}
+  .cr:hover{background:#f7faf8}
+  .cr.sel{background:#eef9f0;border-left-color:var(--green)}
+  .cr-i{width:18px;font-size:.85rem}
+  .cr-n{width:34px;font-size:.72rem;font-weight:700}
+  .cr-t{width:26px;font-size:.8rem;font-weight:900;text-align:right}
+  .cr-bw{flex:1;display:flex;align-items:center;gap:.2rem;padding:0 .35rem}
+  .cr-lo{font-size:.58rem;color:var(--blue);font-weight:500;width:16px;text-align:right}
   .cr-b{flex:1;height:3px;background:#eef0f2;border-radius:2px;position:relative;overflow:hidden}
   .cr-bf{position:absolute;height:100%;border-radius:2px;background:linear-gradient(90deg,var(--blue),var(--green),var(--red))}
-  .cr-hi{font-size:.6rem;color:var(--red);font-weight:700;width:16px}
+  .cr-hi{font-size:.58rem;color:var(--red);font-weight:700;width:16px}
 
-  .ft{background:var(--white);border-top:1px solid var(--border);padding:.35rem;font-size:.6rem;color:var(--text-l);text-align:center;flex-shrink:0}
+  .ft{background:var(--white);border-top:1px solid var(--border);padding:.3rem;font-size:.58rem;color:var(--tl);text-align:center;flex-shrink:0}
 
   @media(max-width:1024px){
-    html,body{overflow:auto} .page{height:auto} .main{flex-direction:column}
+    html,body{overflow:auto}.page{height:auto}.main{flex-direction:column}
     .lp{width:100%;border-right:none;border-bottom:1px solid var(--border);display:flex;flex-wrap:wrap}
-    .lp-s{flex:1;min-width:180px}
-    .mp{min-height:50vh} .rp{width:100%;border-left:none;border-top:1px solid var(--border)}
+    .lp-s{flex:1;min-width:170px}.mp{min-height:55vh}.rp{width:100%;border-left:none;border-top:1px solid var(--border)}
   }
 </style>
 </head>
@@ -113,62 +105,43 @@
   <div style="display:flex;align-items:center"><h1>☁️ <span>전국 날씨</span></h1><span class="hd-date">2026.04.21 (월)</span></div>
   <a href="index.html" class="hd-link">📰 데일리 브리핑 →</a>
 </div>
-
 <div class="main">
 
 <!-- LEFT -->
 <div class="lp">
-  <!-- Alerts -->
   <div class="lp-s">
     <div class="lp-t">⚠️ 기상특보</div>
     <div class="al"><span class="al-b c">한파주의보</span> 강원남부·충남·전북<p class="al-tx">역대 가장 늦은 4월 한파특보. 아침 5~10° 급락.</p></div>
-    <div class="al"><span class="al-b w">황사</span> 전국<p class="al-tx">미세먼지 높음. 외출 시 마스크 권장.</p></div>
+    <div class="al"><span class="al-b w">황사</span> 전국<p class="al-tx">미세먼지 높음. 마스크 권장.</p></div>
   </div>
-
-  <!-- City Detail (default: 서울) -->
-  <div class="lp-s" id="detail-panel">
-    <div class="cd active" id="cd-seoul">
-      <div class="cd-hero">
-        <div class="cd-city">서울특별시</div>
-        <div class="cd-icon">☀️</div>
-        <div class="cd-temp">12°</div>
-        <div class="cd-cond">맑음</div>
-        <div class="cd-range"><span class="lo">6°</span> / <span class="hi">19°</span> · 일교차 13°</div>
-      </div>
+  <div class="lp-s" id="city-detail">
+    <div class="cd-hero">
+      <div class="cd-city" id="d-city">서울특별시</div>
+      <div class="cd-icon" id="d-icon">☀️</div>
+      <div class="cd-temp" id="d-temp">12°</div>
+      <div class="cd-cond" id="d-cond">맑음</div>
+      <div class="cd-range" id="d-range"><span class="lo">6°</span> / <span class="hi">19°</span> · 일교차 13°</div>
     </div>
-    <div class="cd" id="cd-other">
-      <div class="cd-hero">
-        <div class="cd-city" id="do-city"></div>
-        <div class="cd-icon" id="do-icon"></div>
-        <div class="cd-temp" id="do-temp"></div>
-        <div class="cd-cond" id="do-cond"></div>
-        <div class="cd-range" id="do-range"></div>
-      </div>
-    </div>
-    <div class="cd-hint" onclick="selectCity('seoul')">← 서울로 돌아가기</div>
+    <div id="cd-back" onclick="selectCity('seoul')">← 서울로 돌아가기</div>
   </div>
-
-  <!-- Info -->
   <div class="lp-s">
     <div class="lp-t">📊 상세 정보</div>
     <div class="ig">
       <div class="ig-i"><div class="ig-l">💧 습도</div><div class="ig-v">52%</div></div>
-      <div class="ig-i"><div class="ig-l">💨 바람</div><div class="ig-v">18.7<span style="font-size:.55rem;font-weight:400"> km/h</span></div><div class="ig-s">서풍</div></div>
+      <div class="ig-i"><div class="ig-l">💨 바람</div><div class="ig-v">18.7<span style="font-size:.5rem;font-weight:400">km/h</span></div><div class="ig-s">서풍</div></div>
       <div class="ig-i"><div class="ig-l">☀️ 자외선</div><div class="ig-v">4</div><div class="ig-s">보통</div></div>
       <div class="ig-i"><div class="ig-l">🌡️ 체감</div><div class="ig-v">12°</div><div class="ig-s">서늘</div></div>
     </div>
   </div>
-  <!-- Air -->
   <div class="lp-s">
     <div class="lp-t">😷 대기질</div>
     <div class="am">
-      <div class="ac"><div class="ac-l">미세먼지</div><div class="ac-v">54</div><span class="ac-b">보통</span></div>
-      <div class="ac"><div class="ac-l">초미세먼지</div><div class="ac-v">31</div><span class="ac-b">보통</span></div>
+      <div class="ac"><div class="ac-l">미세먼지</div><div class="ac-v">54</div><span class="ac-badge">보통</span></div>
+      <div class="ac"><div class="ac-l">초미세먼지</div><div class="ac-v">31</div><span class="ac-badge">보통</span></div>
     </div>
   </div>
-  <!-- Sun -->
   <div class="lp-s">
-    <div class="lp-t">🌅 일출/일몰</div>
+    <div class="lp-t">🌅 일출 / 일몰</div>
     <div class="sn">
       <div><div class="sn-i">🌅</div><div class="sn-l">일출</div><div class="sn-t">05:50</div></div>
       <div><div class="sn-i">🌇</div><div class="sn-l">일몰</div><div class="sn-t">19:12</div></div>
@@ -178,126 +151,194 @@
 
 <!-- MAP -->
 <div class="mp">
-<div class="mw">
-<svg viewBox="0 0 500 600" xmlns="http://www.w3.org/2000/svg">
-  <!-- China (partial) -->
-  <path d="M0,0 L0,350 L60,330 L80,280 L70,240 L90,200 L80,150 L100,110 L90,60 L110,20 L140,0 Z" fill="var(--land-cn)" stroke="#ccc" stroke-width=".8" opacity=".6"/>
-  <text x="30" y="180" style="font-size:9px;fill:#bbb;font-family:var(--sans)">중국</text>
+<svg viewBox="0 0 600 700" xmlns="http://www.w3.org/2000/svg">
 
-  <!-- North Korea -->
-  <path d="M140,0 L110,20 L90,60 L100,110 L115,90 L130,80 L145,55 L155,30 L185,15 L220,20 L260,10 L290,25 L310,18 L300,0 Z" fill="var(--land-nk)" stroke="var(--stroke-nk)" stroke-width="1"/>
-  <text x="200" y="15" text-anchor="middle" style="font-size:8px;fill:#aaa;font-family:var(--sans)">북한</text>
-  <!-- Pyongyang dot -->
-  <circle cx="175" cy="32" r="3" fill="#999"/>
-  <text x="185" y="35" style="font-size:7px;fill:#aaa;font-family:var(--sans)">평양</text>
+  <!-- China coast -->
+  <path d="M0,0 L0,420 C20,400 40,380 55,350 C65,330 60,300 70,275 C78,255 72,235 80,210 C88,185 82,160 90,140 C98,118 90,95 100,75 C108,55 100,35 115,15 L130,0 Z" fill="var(--land-cn)" stroke="var(--stroke-cn)" stroke-width=".7"/>
+  <text x="25" y="220" class="country-label" style="font-size:10px">중국</text>
 
-  <!-- DMZ line -->
-  <line x1="115" y1="55" x2="310" y2="18" stroke="#e57373" stroke-width=".8" stroke-dasharray="4,3" opacity=".5"/>
+  <!-- North Korea - smoother shape -->
+  <path d="M130,0 C125,15 108,35 100,55 C95,70 98,85 105,105 C110,120 115,130 120,142
+    C127,155 135,148 142,138 C148,130 152,120 158,112
+    C164,104 170,98 178,92 C186,86 192,78 198,68
+    C204,58 212,50 222,46 C232,42 242,38 252,32
+    C260,28 268,22 278,18 C288,14 300,12 310,16
+    C318,19 324,24 330,30 C334,34 338,38 340,45
+    L345,0 Z" fill="var(--land-nk)" stroke="var(--stroke-nk)" stroke-width="1"/>
+  <text x="220" y="28" text-anchor="middle" class="country-label" style="font-size:8px">조선민주주의인민공화국</text>
+  <circle cx="198" cy="48" r="2.5" fill="#aaa"/><text x="207" y="51" style="font-size:6.5px;fill:#aaa;font-family:var(--sans)">평양</text>
 
-  <!-- South Korea -->
-  <path d="M155,30 L185,15 L220,20 L260,10 L290,25 L310,18 L330,35 L340,60 L335,90 L345,110 L340,130 L350,160 L338,175 L330,160 L310,170 L290,155 L285,175 L295,200 L280,220 L290,250 L270,270 L280,300 L265,320 L270,350 L250,370 L240,400 L220,410 L200,430 L180,420 L160,440 L140,430 L120,400 L130,370 L115,340 L125,310 L110,290 L120,260 L110,230 L125,200 L115,180 L130,155 L120,130 L135,110 L125,80 L140,55 Z" fill="var(--land)" stroke="var(--stroke)" stroke-width="1.5"/>
+  <!-- DMZ -->
+  <line x1="120" y1="142" x2="340" y2="45" stroke="#d32f2f" stroke-width=".6" stroke-dasharray="3,2" opacity=".4"/>
+  <text x="240" y="82" style="font-size:5px;fill:#d32f2f;font-family:var(--sans);opacity:.5">DMZ</text>
 
+  <!-- South Korea - detailed smooth coastline -->
+  <path d="
+    M158,112 C152,120 148,130 142,138
+    C136,148 128,155 124,165 C120,175 118,185 120,198
+    C122,210 126,218 125,230 C124,242 118,252 115,265
+    C112,278 115,290 118,302 C121,314 120,326 118,338
+    C116,350 120,362 126,375 C132,388 128,400 135,412
+    C140,420 145,426 148,435
+    C152,448 158,455 165,462 C172,468 176,472 182,478
+    C188,484 195,488 202,490 C210,492 218,490 225,486
+    C232,482 238,476 245,468 C252,460 256,452 262,442
+    C268,432 275,425 278,415
+    C282,405 288,395 292,385 C296,375 298,365 300,355
+    C302,345 308,338 310,328 C312,318 308,308 310,298
+    C312,288 318,280 320,270 C322,260 318,250 315,240
+    C312,230 316,220 320,210
+    C324,200 330,192 335,182 C340,172 342,162 348,155
+    C354,148 360,145 362,138
+    C360,130 356,122 352,115
+    C348,108 344,100 342,90
+    C340,80 338,70 340,60
+    C342,50 338,42 334,36
+    C330,30 324,24 318,18
+    C310,14 300,14 290,18
+    C278,22 268,28 258,34
+    C248,40 238,44 228,48
+    C218,52 208,58 200,66
+    C192,74 186,84 180,92
+    C174,100 168,108 158,112 Z
+  " fill="var(--land)" stroke="var(--stroke-sk)" stroke-width="1.2"/>
+
+  <!-- Islands -->
   <!-- Jeju -->
-  <ellipse cx="175" cy="492" rx="50" ry="20" fill="var(--land)" stroke="var(--stroke)" stroke-width="1.5"/>
+  <path d="M195,560 C205,554 218,552 230,554 C242,556 250,562 248,568 C246,574 235,578 222,578 C209,578 198,574 194,568 C192,564 192,562 195,560 Z" fill="var(--land)" stroke="var(--stroke-sk)" stroke-width="1"/>
+  <!-- Geoje -->
+  <ellipse cx="292" cy="400" rx="10" ry="7" fill="var(--land)" stroke="var(--stroke-sk)" stroke-width=".8" transform="rotate(-20,292,400)"/>
   <!-- Ulleungdo -->
-  <circle cx="380" cy="80" r="7" fill="var(--land)" stroke="var(--stroke)" stroke-width="1"/>
-  <text x="380" y="97" text-anchor="middle" style="font-size:6.5px;fill:#999;font-family:var(--sans)">울릉도</text>
+  <circle cx="420" cy="105" r="6" fill="var(--land)" stroke="var(--stroke-sk)" stroke-width=".8"/>
+  <text x="420" y="120" text-anchor="middle" style="font-size:6px;fill:#999;font-family:var(--sans)">울릉도</text>
   <!-- Dokdo -->
-  <circle cx="410" cy="85" r="3" fill="var(--land)" stroke="var(--stroke)" stroke-width=".8"/>
-  <text x="410" y="97" text-anchor="middle" style="font-size:5.5px;fill:#999;font-family:var(--sans)">독도</text>
+  <circle cx="450" cy="112" r="2.5" fill="var(--land)" stroke="var(--stroke-sk)" stroke-width=".6"/>
+  <text x="450" y="123" text-anchor="middle" style="font-size:5px;fill:#999;font-family:var(--sans)">독도</text>
 
-  <!-- Japan (partial) -->
-  <path d="M420,130 L430,110 L445,100 L460,115 L470,145 L480,180 L490,220 L485,260 L475,300 L460,340 L445,370 L435,400 L440,430 L450,460 L460,490 L455,510 L440,530 L420,540 L410,510 L415,480 L405,450 L410,420 L400,390 L405,360 L395,330 L400,300 L390,270 L395,240 L385,210 L390,180 L385,150 Z" fill="var(--land-jp)" stroke="var(--stroke-jp)" stroke-width=".8" opacity=".7"/>
+  <!-- Japan -->
+  <!-- Honshu -->
+  <path d="M480,160 C475,175 470,195 472,218 C474,240 478,260 476,285 C474,310 470,335 468,360 C466,385 470,405 475,425 C478,440 482,455 488,470 C492,480 496,490 500,500 C504,510 508,518 510,528 C508,538 502,545 495,548 C488,545 485,535 482,525 C478,515 474,505 470,495 C465,485 460,478 455,470 C448,460 444,450 440,440 C435,430 432,418 430,405 C428,392 430,380 432,368 C434,355 430,342 428,330 C426,318 430,305 432,292 C434,278 430,265 428,250 C426,235 430,220 435,208 C440,195 445,185 452,175 C458,165 465,158 472,155 C478,153 482,155 480,160 Z" fill="var(--land-jp)" stroke="var(--stroke-jp)" stroke-width=".8" opacity=".75"/>
+  <!-- Kyushu -->
+  <path d="M420,430 C425,422 432,418 438,420 C444,422 448,430 450,440 C452,450 448,460 442,465 C436,468 428,465 422,458 C418,450 416,440 420,430 Z" fill="var(--land-jp)" stroke="var(--stroke-jp)" stroke-width=".7" opacity=".7"/>
+  <!-- Shikoku -->
+  <path d="M462,385 C468,380 476,382 480,388 C484,394 482,402 476,406 C470,408 464,404 460,398 C458,392 459,388 462,385 Z" fill="var(--land-jp)" stroke="var(--stroke-jp)" stroke-width=".6" opacity=".65"/>
   <!-- Tsushima -->
-  <ellipse cx="350" cy="410" rx="10" ry="18" fill="var(--land-jp)" stroke="var(--stroke-jp)" stroke-width=".6" opacity=".6" transform="rotate(-15,350,410)"/>
-  <text x="430" y="300" style="font-size:10px;fill:#c4b08a;font-family:var(--sans)">일본</text>
-  <!-- Tokyo label -->
-  <circle cx="460" cy="255" r="2.5" fill="#c4b08a"/>
-  <text x="448" y="268" style="font-size:6.5px;fill:#bba880;font-family:var(--sans)">도쿄</text>
+  <ellipse cx="378" cy="430" rx="6" ry="14" fill="var(--land-jp)" stroke="var(--stroke-jp)" stroke-width=".5" opacity=".6" transform="rotate(-10,378,430)"/>
+  <text x="475" y="350" class="country-label" style="font-size:11px;fill:#c4b08a">일본</text>
+  <circle cx="492" cy="290" r="2" fill="#c4b08a" opacity=".7"/>
+  <text x="498" y="293" style="font-size:6px;fill:#bba880;font-family:var(--sans)">도쿄</text>
 
   <!-- Sea labels -->
-  <text x="90" y="420" style="font-size:8px;fill:#9cc;font-family:var(--sans);letter-spacing:4px">서해</text>
-  <text x="340" y="450" style="font-size:8px;fill:#9cc;font-family:var(--sans);letter-spacing:4px">남해</text>
-  <text x="370" cy="180" y="180" style="font-size:8px;fill:#9cc;font-family:var(--sans);letter-spacing:3px">동해</text>
+  <text x="65" y="460" class="sea-label">서해</text>
+  <text x="300" y="530" class="sea-label">남해</text>
+  <text x="390" y="230" class="sea-label">동해</text>
+  <text x="160" y="630" class="sea-label" style="font-size:7px;letter-spacing:3px">동중국해</text>
 
   <!-- === CITY DOTS === -->
-  <g class="dot" data-city="seoul" onclick="selectCity('seoul')">
-    <circle cx="175" cy="95" r="5" fill="var(--green)"/>
-    <text x="186" y="88" class="dot-temp">12°</text>
-    <text x="186" y="100" class="dot-name">서울 ☀️</text>
+  <g class="dot sel" data-city="seoul" onclick="selectCity('seoul')">
+    <circle cx="195" cy="135" class="dot-bg" r="0"/>
+    <circle cx="195" cy="135" class="dot-ring" r="0"/>
+    <circle cx="195" cy="135" r="4.5" class="dot-pt"/>
+    <text x="207" y="128" class="dt">12°</text>
+    <text x="207" y="138" class="dn">서울 ☀️</text>
   </g>
   <g class="dot" data-city="incheon" onclick="selectCity('incheon')">
-    <circle cx="150" cy="108" r="4" fill="var(--red)" opacity=".8"/>
-    <text x="122" y="105" class="dot-temp" style="font-size:9px">11°</text>
-    <text x="122" y="114" class="dot-name">인��</text>
+    <circle cx="170" cy="148" class="dot-bg" r="0"/>
+    <circle cx="170" cy="148" class="dot-ring" r="0"/>
+    <circle cx="170" cy="148" r="3.5" class="dot-pt"/>
+    <text x="143" y="146" class="dt" style="font-size:9px">11°</text>
+    <text x="143" y="155" class="dn">인천</text>
   </g>
   <g class="dot" data-city="suwon" onclick="selectCity('suwon')">
-    <circle cx="178" cy="128" r="4" fill="var(--red)" opacity=".8"/>
-    <text x="189" y="126" class="dot-temp" style="font-size:9px">10°</text>
-    <text x="189" y="135" class="dot-name">수원</text>
+    <circle cx="198" cy="168" class="dot-bg" r="0"/>
+    <circle cx="198" cy="168" class="dot-ring" r="0"/>
+    <circle cx="198" cy="168" r="3.5" class="dot-pt"/>
+    <text x="210" y="166" class="dt" style="font-size:9px">10°</text>
+    <text x="210" y="175" class="dn">수원</text>
   </g>
   <g class="dot" data-city="chuncheon" onclick="selectCity('chuncheon')">
-    <circle cx="218" cy="68" r="4" fill="var(--red)" opacity=".8"/>
-    <text x="229" y="66" class="dot-temp" style="font-size:9px">10°</text>
-    <text x="229" y="75" class="dot-name">춘천</text>
+    <circle cx="238" cy="108" class="dot-bg" r="0"/>
+    <circle cx="238" cy="108" class="dot-ring" r="0"/>
+    <circle cx="238" cy="108" r="3.5" class="dot-pt"/>
+    <text x="250" y="106" class="dt" style="font-size:9px">10°</text>
+    <text x="250" y="115" class="dn">춘천</text>
   </g>
   <g class="dot" data-city="gangneung" onclick="selectCity('gangneung')">
-    <circle cx="315" cy="82" r="4" fill="var(--red)" opacity=".8"/>
-    <text x="326" y="80" class="dot-temp" style="font-size:9px">15°</text>
-    <text x="326" y="89" class="dot-name">강릉</text>
+    <circle cx="340" cy="115" class="dot-bg" r="0"/>
+    <circle cx="340" cy="115" class="dot-ring" r="0"/>
+    <circle cx="340" cy="115" r="3.5" class="dot-pt"/>
+    <text x="325" y="106" class="dt" style="font-size:9px">15°</text>
+    <text x="325" y="130" class="dn">강릉</text>
   </g>
   <g class="dot" data-city="cheongju" onclick="selectCity('cheongju')">
-    <circle cx="215" cy="168" r="4" fill="var(--red)" opacity=".8"/>
-    <text x="226" y="166" class="dot-temp" style="font-size:9px">12°</text>
-    <text x="226" y="175" class="dot-name">청주</text>
+    <circle cx="235" cy="205" class="dot-bg" r="0"/>
+    <circle cx="235" cy="205" class="dot-ring" r="0"/>
+    <circle cx="235" cy="205" r="3.5" class="dot-pt"/>
+    <text x="247" y="203" class="dt" style="font-size:9px">12°</text>
+    <text x="247" y="212" class="dn">청주</text>
   </g>
   <g class="dot" data-city="daejeon" onclick="selectCity('daejeon')">
-    <circle cx="195" cy="208" r="5" fill="var(--green)"/>
-    <text x="206" y="201" class="dot-temp">12°</text>
-    <text x="206" y="213" class="dot-name">대전 ☀️</text>
+    <circle cx="215" cy="245" class="dot-bg" r="0"/>
+    <circle cx="215" cy="245" class="dot-ring" r="0"/>
+    <circle cx="215" cy="245" r="4" class="dot-pt"/>
+    <text x="227" y="240" class="dt">12°</text>
+    <text x="227" y="250" class="dn">대전 ☀️</text>
   </g>
   <g class="dot" data-city="jeonju" onclick="selectCity('jeonju')">
-    <circle cx="165" cy="258" r="4" fill="var(--red)" opacity=".8"/>
-    <text x="135" y="256" class="dot-temp" style="font-size:9px">12°</text>
-    <text x="135" y="265" class="dot-name">전주</text>
+    <circle cx="185" cy="295" class="dot-bg" r="0"/>
+    <circle cx="185" cy="295" class="dot-ring" r="0"/>
+    <circle cx="185" cy="295" r="3.5" class="dot-pt"/>
+    <text x="157" y="293" class="dt" style="font-size:9px">12°</text>
+    <text x="157" y="302" class="dn">전주</text>
   </g>
   <g class="dot" data-city="gwangju" onclick="selectCity('gwangju')">
-    <circle cx="155" cy="328" r="5" fill="var(--green)"/>
-    <text x="123" y="321" class="dot-temp">13°</text>
-    <text x="123" y="333" class="dot-name">광주 ☀️</text>
+    <circle cx="170" cy="370" class="dot-bg" r="0"/>
+    <circle cx="170" cy="370" class="dot-ring" r="0"/>
+    <circle cx="170" cy="370" r="4" class="dot-pt"/>
+    <text x="140" y="365" class="dt">13°</text>
+    <text x="140" y="375" class="dn">광주 ☀️</text>
   </g>
   <g class="dot" data-city="mokpo" onclick="selectCity('mokpo')">
-    <circle cx="122" cy="380" r="4" fill="var(--red)" opacity=".8"/>
-    <text x="92" y="378" class="dot-temp" style="font-size:9px">13°</text>
-    <text x="92" y="387" class="dot-name">목포</text>
+    <circle cx="138" cy="415" class="dot-bg" r="0"/>
+    <circle cx="138" cy="415" class="dot-ring" r="0"/>
+    <circle cx="138" cy="415" r="3.5" class="dot-pt"/>
+    <text x="110" y="413" class="dt" style="font-size:9px">13°</text>
+    <text x="110" y="422" class="dn">목포</text>
   </g>
   <g class="dot" data-city="daegu" onclick="selectCity('daegu')">
-    <circle cx="270" cy="258" r="5" fill="var(--green)"/>
-    <text x="281" y="251" class="dot-temp">14°</text>
-    <text x="281" y="263" class="dot-name">대구 ☀️</text>
+    <circle cx="290" cy="295" class="dot-bg" r="0"/>
+    <circle cx="290" cy="295" class="dot-ring" r="0"/>
+    <circle cx="290" cy="295" r="4" class="dot-pt"/>
+    <text x="302" y="290" class="dt">14°</text>
+    <text x="302" y="300" class="dn">대구 ☀️</text>
   </g>
   <g class="dot" data-city="ulsan" onclick="selectCity('ulsan')">
-    <circle cx="310" cy="288" r="4" fill="var(--red)" opacity=".8"/>
-    <text x="321" y="286" class="dot-temp" style="font-size:9px">14°</text>
-    <text x="321" y="295" class="dot-name">울산</text>
+    <circle cx="328" cy="325" class="dot-bg" r="0"/>
+    <circle cx="328" cy="325" class="dot-ring" r="0"/>
+    <circle cx="328" cy="325" r="3.5" class="dot-pt"/>
+    <text x="340" y="323" class="dt" style="font-size:9px">14°</text>
+    <text x="340" y="332" class="dn">울산</text>
   </g>
   <g class="dot" data-city="busan" onclick="selectCity('busan')">
-    <circle cx="285" cy="338" r="5" fill="var(--green)"/>
-    <text x="296" y="331" class="dot-temp">15°</text>
-    <text x="296" y="343" class="dot-name">부산 ☀️</text>
+    <circle cx="310" cy="375" class="dot-bg" r="0"/>
+    <circle cx="310" cy="375" class="dot-ring" r="0"/>
+    <circle cx="310" cy="375" r="4" class="dot-pt"/>
+    <text x="322" y="370" class="dt">15°</text>
+    <text x="322" y="380" class="dn">부산 ☀️</text>
   </g>
   <g class="dot" data-city="jeju" onclick="selectCity('jeju')">
-    <circle cx="175" cy="490" r="5" fill="var(--green)"/>
-    <text x="192" y="485" class="dot-temp">13°</text>
-    <text x="192" y="497" class="dot-name">제주 ⛅</text>
+    <circle cx="218" cy="564" class="dot-bg" r="0"/>
+    <circle cx="218" cy="564" class="dot-ring" r="0"/>
+    <circle cx="218" cy="564" r="4" class="dot-pt"/>
+    <text x="232" y="559" class="dt">13°</text>
+    <text x="232" y="569" class="dn">제주 ⛅</text>
   </g>
 </svg>
-</div>
 </div>
 
 <!-- RIGHT -->
 <div class="rp">
-  <div class="rp-h">📋 전국 14개 도시 <span style="font-weight:400;color:var(--text-l)">· 클릭하면 상세보기</span></div>
+  <div class="rp-h">📋 전국 14개 도시 <span style="font-weight:400;color:var(--tl);font-size:.6rem">클릭 → 상세</span></div>
   <div class="cl">
     <div class="cr sel" data-city="seoul" onclick="selectCity('seoul')"><span class="cr-i">☀️</span><span class="cr-n">서울</span><span class="cr-t">12°</span><div class="cr-bw"><span class="cr-lo">6°</span><div class="cr-b"><div class="cr-bf" style="left:15%;width:50%"></div></div><span class="cr-hi">19°</span></div></div>
     <div class="cr" data-city="incheon" onclick="selectCity('incheon')"><span class="cr-i">☀️</span><span class="cr-n">인천</span><span class="cr-t">11°</span><div class="cr-bw"><span class="cr-lo">7°</span><div class="cr-b"><div class="cr-bf" style="left:20%;width:38%"></div></div><span class="cr-hi">17°</span></div></div>
@@ -317,18 +358,18 @@
 </div>
 
 </div>
-<div class="ft">데��터: 기상청 · AccuWeather | Powered by Claude Code</div>
+<div class="ft">데이터: 기상청 · AccuWeather | Powered by Claude Code</div>
 </div>
 
 <script>
-const cities = {
+const C={
   seoul:{name:'서울특별시',icon:'☀️',temp:'12°',cond:'맑음',lo:'6°',hi:'19°',diff:'13°'},
   incheon:{name:'인천광역시',icon:'☀️',temp:'11°',cond:'맑음',lo:'7°',hi:'17°',diff:'10°'},
   suwon:{name:'경기 수원시',icon:'☀️',temp:'10°',cond:'맑음',lo:'4°',hi:'18°',diff:'14°'},
   chuncheon:{name:'강원 춘천시',icon:'☀️',temp:'10°',cond:'맑음',lo:'3°',hi:'20°',diff:'17°'},
   gangneung:{name:'강원 강릉시',icon:'☀️',temp:'15°',cond:'맑음',lo:'10°',hi:'21°',diff:'11°'},
   cheongju:{name:'충북 청주시',icon:'☀️',temp:'12°',cond:'맑음',lo:'4°',hi:'21°',diff:'17°'},
-  daejeon:{name:'���전광역시',icon:'☀️',temp:'12°',cond:'맑음',lo:'4°',hi:'20°',diff:'16°'},
+  daejeon:{name:'대전광역시',icon:'☀️',temp:'12°',cond:'맑음',lo:'4°',hi:'20°',diff:'16°'},
   jeonju:{name:'전북 전주시',icon:'☀️',temp:'12°',cond:'맑음',lo:'5°',hi:'20°',diff:'15°'},
   gwangju:{name:'광주광역시',icon:'☀️',temp:'13°',cond:'맑음',lo:'5°',hi:'22°',diff:'17°'},
   mokpo:{name:'전남 목포시',icon:'☀️',temp:'13°',cond:'맑음',lo:'7°',hi:'19°',diff:'12°'},
@@ -337,34 +378,20 @@ const cities = {
   ulsan:{name:'울산광역시',icon:'☀️',temp:'14°',cond:'맑음',lo:'9°',hi:'21°',diff:'12°'},
   jeju:{name:'제주특별자치도',icon:'⛅',temp:'13°',cond:'구름많음',lo:'8°',hi:'19°',diff:'11°'}
 };
-
-function selectCity(id) {
-  const c = cities[id];
-  if (!c) return;
-
-  // Update left panel
-  if (id === 'seoul') {
-    document.getElementById('cd-seoul').classList.add('active');
-    document.getElementById('cd-other').classList.remove('active');
-  } else {
-    document.getElementById('cd-seoul').classList.remove('active');
-    document.getElementById('cd-other').classList.add('active');
-    document.getElementById('do-city').textContent = c.name;
-    document.getElementById('do-icon').textContent = c.icon;
-    document.getElementById('do-temp').textContent = c.temp;
-    document.getElementById('do-cond').textContent = c.cond;
-    document.getElementById('do-range').innerHTML = '<span class="lo">'+c.lo+'</span> / <span class="hi">'+c.hi+'</span> · 일교차 '+c.diff;
-  }
-
-  // Highlight right panel row
-  document.querySelectorAll('.cr').forEach(r => r.classList.remove('sel'));
-  const row = document.querySelector('.cr[data-city="'+id+'"]');
-  if (row) { row.classList.add('sel'); row.scrollIntoView({block:'nearest'}); }
-
-  // Highlight map dot
-  document.querySelectorAll('.dot').forEach(d => d.classList.remove('sel'));
-  const dot = document.querySelector('.dot[data-city="'+id+'"]');
-  if (dot) dot.classList.add('sel');
+function selectCity(id){
+  const c=C[id]; if(!c)return;
+  document.getElementById('d-city').textContent=c.name;
+  document.getElementById('d-icon').textContent=c.icon;
+  document.getElementById('d-temp').textContent=c.temp;
+  document.getElementById('d-cond').textContent=c.cond;
+  document.getElementById('d-range').innerHTML='<span class="lo">'+c.lo+'</span> / <span class="hi">'+c.hi+'</span> · 일교차 '+c.diff;
+  document.getElementById('cd-back').style.display=id==='seoul'?'none':'block';
+  document.querySelectorAll('.cr').forEach(r=>r.classList.remove('sel'));
+  const row=document.querySelector('.cr[data-city="'+id+'"]');
+  if(row){row.classList.add('sel');row.scrollIntoView({block:'nearest'})}
+  document.querySelectorAll('.dot').forEach(d=>d.classList.remove('sel'));
+  const dot=document.querySelector('.dot[data-city="'+id+'"]');
+  if(dot)dot.classList.add('sel');
 }
 </script>
 </body>
