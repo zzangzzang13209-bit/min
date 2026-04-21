@@ -7,263 +7,365 @@
 <style>
   @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700;900&display=swap');
   :root {
-    --bg: #f2f4f8;
-    --white: #ffffff;
-    --green: #00C73C;
-    --red: #F45452;
-    --blue: #4A90D9;
-    --orange: #FF8C00;
-    --sea: #d6eaf8;
-    --land: #e8f5e9;
-    --land-stroke: #a5d6a7;
-    --text: #333;
-    --text-light: #999;
-    --border: #e0e3e8;
-    --sans: 'Noto Sans KR', -apple-system, sans-serif;
+    --bg:#f2f4f8;--white:#fff;--green:#00C73C;--red:#F45452;--blue:#4A90D9;--orange:#FF8C00;
+    --sea:#daeaf6;--land:#e8f5e9;--land-nk:#e0e0e0;--land-jp:#f5ecd7;--land-cn:#ece6da;
+    --stroke:#a5d6a7;--stroke-nk:#bbb;--stroke-jp:#d4c9a8;
+    --text:#333;--text-l:#999;--border:#e0e3e8;--sans:'Noto Sans KR',-apple-system,sans-serif;
   }
-  * { margin:0; padding:0; box-sizing:border-box; }
-  html, body { font-family:var(--sans); background:var(--bg); color:var(--text); height:100%; overflow:hidden; }
+  *{margin:0;padding:0;box-sizing:border-box}
+  html,body{font-family:var(--sans);background:var(--bg);color:var(--text);height:100%;overflow:hidden}
+  .page{display:flex;flex-direction:column;height:100vh;max-width:1400px;margin:0 auto}
 
-  .page { display:flex; flex-direction:column; height:100vh; max-width:1400px; margin:0 auto; }
+  /* Header */
+  .hd{background:var(--white);border-bottom:2px solid var(--green);padding:.45rem 1rem;display:flex;align-items:center;justify-content:space-between;flex-shrink:0}
+  .hd h1{font-size:1rem;font-weight:900} .hd h1 span{color:var(--green)}
+  .hd-date{font-size:.7rem;color:var(--text-l);margin-left:.6rem}
+  .hd-link{font-size:.7rem;color:var(--green);text-decoration:none;font-weight:600}
 
-  /* ── Header ── */
-  .header { background:var(--white); border-bottom:2px solid var(--green); padding:0.5rem 1.2rem; display:flex; align-items:center; justify-content:space-between; flex-shrink:0; }
-  .header-left { display:flex; align-items:center; gap:0.8rem; }
-  .header h1 { font-size:1.05rem; font-weight:900; } .header h1 span { color:var(--green); }
-  .header-date { font-size:0.72rem; color:var(--text-light); }
-  .header-link { font-size:0.72rem; color:var(--green); text-decoration:none; font-weight:600; }
+  .main{flex:1;display:flex;overflow:hidden;min-height:0}
 
-  /* ── Main 3-col ── */
-  .main { flex:1; display:flex; overflow:hidden; min-height:0; }
+  /* Left Panel */
+  .lp{width:255px;flex-shrink:0;background:var(--white);border-right:1px solid var(--border);overflow-y:auto}
+  .lp-s{padding:.7rem .8rem;border-bottom:1px solid var(--border)}
+  .lp-t{font-size:.65rem;font-weight:700;color:var(--text-l);letter-spacing:.03em;margin-bottom:.5rem;display:flex;align-items:center;gap:.3rem}
 
-  /* ── Left Panel ── */
-  .left-panel { width:260px; flex-shrink:0; background:var(--white); border-right:1px solid var(--border); display:flex; flex-direction:column; overflow-y:auto; }
-  .lp-section { padding:0.8rem; border-bottom:1px solid var(--border); }
-  .lp-title { font-size:0.7rem; font-weight:700; color:var(--text-light); letter-spacing:0.04em; margin-bottom:0.6rem; display:flex; align-items:center; gap:0.3rem; }
+  /* Alert */
+  .al{background:#fff8f0;border:1px solid #ffe0b2;border-radius:7px;padding:.5rem .6rem;margin-bottom:.35rem}
+  .al:last-child{margin-bottom:0}
+  .al-b{display:inline-block;font-size:.58rem;font-weight:700;color:#fff;padding:.12em .45em;border-radius:5px;margin-right:.25rem}
+  .al-b.w{background:var(--orange)} .al-b.c{background:var(--blue)}
+  .al-tx{font-size:.72rem;color:#555;line-height:1.5;margin-top:.2rem}
 
-  /* Alert box */
-  .alert-box { background:#fff8f0; border:1px solid #ffe0b2; border-radius:8px; padding:0.6rem 0.7rem; }
-  .alert-badge { display:inline-block; font-size:0.62rem; font-weight:700; color:#fff; padding:0.15em 0.5em; border-radius:6px; margin-right:0.3rem; }
-  .alert-badge.warn { background:var(--orange); }
-  .alert-badge.cold { background:var(--blue); }
-  .alert-text { font-size:0.75rem; color:#555; line-height:1.5; margin-top:0.3rem; }
-
-  /* Weather summary */
-  .summary-text { font-size:0.78rem; color:#555; line-height:1.65; }
-  .summary-text strong { color:var(--green); }
+  /* City detail (shown on click) */
+  .cd{display:none}
+  .cd.active{display:block}
+  .cd-hero{text-align:center;padding:.8rem 0}
+  .cd-city{font-size:.82rem;font-weight:500;color:var(--text-l)}
+  .cd-icon{font-size:2.5rem;margin:.2rem 0}
+  .cd-temp{font-size:2.8rem;font-weight:900;color:var(--text);line-height:1}
+  .cd-cond{font-size:.85rem;color:#555;margin:.2rem 0}
+  .cd-range{font-size:.8rem;color:var(--text-l)}
+  .cd-range .hi{color:var(--red);font-weight:700} .cd-range .lo{color:var(--blue);font-weight:600}
+  .cd-hint{font-size:.65rem;color:var(--text-l);text-align:center;padding:.5rem;cursor:pointer}
+  .cd-hint:hover{color:var(--green)}
 
   /* Info grid */
-  .info-mini { display:grid; grid-template-columns:1fr 1fr; gap:0.4rem; }
-  .info-item { background:#f7f8fa; border-radius:8px; padding:0.5rem 0.6rem; text-align:center; }
-  .info-item-label { font-size:0.62rem; color:var(--text-light); margin-bottom:0.2rem; }
-  .info-item-val { font-size:1rem; font-weight:900; color:var(--text); line-height:1.2; }
-  .info-item-sub { font-size:0.6rem; color:var(--text-light); }
+  .ig{display:grid;grid-template-columns:1fr 1fr;gap:.35rem}
+  .ig-i{background:#f7f8fa;border-radius:7px;padding:.45rem .5rem;text-align:center}
+  .ig-l{font-size:.58rem;color:var(--text-l);margin-bottom:.15rem}
+  .ig-v{font-size:.92rem;font-weight:900;color:var(--text)}
+  .ig-s{font-size:.55rem;color:var(--text-l)}
 
-  /* Air quality */
-  .air-mini { display:flex; gap:0.4rem; }
-  .air-chip { flex:1; background:#f7f8fa; border-radius:8px; padding:0.5rem; text-align:center; }
-  .air-chip-label { font-size:0.62rem; color:var(--text-light); }
-  .air-chip-val { font-size:0.9rem; font-weight:900; color:var(--text); margin:0.15rem 0; }
-  .air-chip-badge { font-size:0.6rem; font-weight:700; color:#fff; padding:0.1em 0.5em; border-radius:6px; }
-  .air-chip-badge.normal { background:var(--green); }
+  /* Air */
+  .am{display:flex;gap:.35rem}
+  .ac{flex:1;background:#f7f8fa;border-radius:7px;padding:.4rem;text-align:center}
+  .ac-l{font-size:.58rem;color:var(--text-l)}
+  .ac-v{font-size:.85rem;font-weight:900;margin:.1rem 0}
+  .ac-b{font-size:.55rem;font-weight:700;color:#fff;padding:.1em .4em;border-radius:5px;background:var(--green)}
 
   /* Sun */
-  .sun-mini { display:flex; justify-content:space-around; text-align:center; }
-  .sun-icon { font-size:1.1rem; }
-  .sun-label { font-size:0.6rem; color:var(--text-light); }
-  .sun-time { font-size:0.85rem; font-weight:700; }
+  .sn{display:flex;justify-content:space-around;text-align:center}
+  .sn-i{font-size:1rem} .sn-l{font-size:.55rem;color:var(--text-l)} .sn-t{font-size:.8rem;font-weight:700}
 
-  /* ── Map Panel (center) ── */
-  .map-panel { flex:1; display:flex; align-items:center; justify-content:center; position:relative; background: var(--sea); overflow:hidden; }
-  .map-wrap { position:relative; width:100%; max-width:500px; height:100%; display:flex; align-items:center; justify-content:center; }
-  .map-svg { width:90%; max-height:95%; }
+  /* Map */
+  .mp{flex:1;display:flex;align-items:center;justify-content:center;background:var(--sea);position:relative;overflow:hidden}
+  .mw{position:relative;width:100%;height:100%;display:flex;align-items:center;justify-content:center}
+  .mw svg{width:88%;max-height:96%}
 
-  /* City labels on map */
-  .cl { position:absolute; text-align:center; pointer-events:none; }
-  .cl-dot { display:block; width:6px; height:6px; background:var(--red); border-radius:50%; margin:0 auto 1px; box-shadow:0 0 4px rgba(244,84,82,0.5); }
-  .cl-name { font-size:0.58rem; font-weight:500; color:#555; display:block; line-height:1.1; }
-  .cl-temp { font-size:0.92rem; font-weight:900; color:var(--text); display:block; line-height:1.15; }
-  .cl-icon { font-size:0.85rem; display:block; }
+  /* City dots on map */
+  .dot{cursor:pointer;transition:transform .15s}
+  .dot:hover{transform:scale(1.2)}
+  .dot circle{transition:r .15s}
+  .dot.sel circle{r:7;fill:var(--green)}
+  .dot-temp{font-size:11px;font-weight:900;fill:var(--text);font-family:var(--sans)}
+  .dot-name{font-size:7.5px;fill:#777;font-family:var(--sans)}
+  .dot-icon{font-size:11px}
 
-  /* ── Right Panel ── */
-  .right-panel { width:280px; flex-shrink:0; background:var(--white); border-left:1px solid var(--border); display:flex; flex-direction:column; }
-  .rp-header { padding:0.6rem 0.8rem; border-bottom:1px solid var(--border); font-size:0.72rem; font-weight:700; color:var(--text); background:#fafbfc; }
-  .city-list { flex:1; overflow-y:auto; }
-  .cr { display:flex; align-items:center; padding:0.45rem 0.8rem; border-bottom:1px solid #f2f3f5; }
-  .cr:hover { background:#f7f8fa; }
-  .cr-icon { width:22px; font-size:0.95rem; }
-  .cr-name { width:38px; font-size:0.78rem; font-weight:700; }
-  .cr-temp { width:30px; font-size:0.88rem; font-weight:900; text-align:right; }
-  .cr-bar-wrap { flex:1; display:flex; align-items:center; gap:0.3rem; padding:0 0.5rem; }
-  .cr-lo { font-size:0.65rem; color:var(--blue); font-weight:500; width:18px; text-align:right; }
-  .cr-bar { flex:1; height:3px; background:#eef0f2; border-radius:2px; position:relative; overflow:hidden; }
-  .cr-bar-fill { position:absolute; height:100%; border-radius:2px; background:linear-gradient(90deg,var(--blue),var(--green),var(--red)); }
-  .cr-hi { font-size:0.65rem; color:var(--red); font-weight:700; width:18px; }
+  /* Right Panel */
+  .rp{width:260px;flex-shrink:0;background:var(--white);border-left:1px solid var(--border);display:flex;flex-direction:column}
+  .rp-h{padding:.5rem .7rem;border-bottom:1px solid var(--border);font-size:.7rem;font-weight:700;background:#fafbfc}
+  .cl{flex:1;overflow-y:auto}
+  .cr{display:flex;align-items:center;padding:.4rem .7rem;border-bottom:1px solid #f2f3f5;cursor:pointer;transition:background .12s}
+  .cr:hover,.cr.sel{background:#eef9f0}
+  .cr.sel{border-left:3px solid var(--green)}
+  .cr-i{width:20px;font-size:.9rem}
+  .cr-n{width:36px;font-size:.75rem;font-weight:700}
+  .cr-t{width:28px;font-size:.82rem;font-weight:900;text-align:right}
+  .cr-bw{flex:1;display:flex;align-items:center;gap:.25rem;padding:0 .4rem}
+  .cr-lo{font-size:.6rem;color:var(--blue);font-weight:500;width:16px;text-align:right}
+  .cr-b{flex:1;height:3px;background:#eef0f2;border-radius:2px;position:relative;overflow:hidden}
+  .cr-bf{position:absolute;height:100%;border-radius:2px;background:linear-gradient(90deg,var(--blue),var(--green),var(--red))}
+  .cr-hi{font-size:.6rem;color:var(--red);font-weight:700;width:16px}
 
-  /* ── Footer ── */
-  .footer-bar { background:var(--white); border-top:1px solid var(--border); padding:0.4rem 1rem; font-size:0.65rem; color:var(--text-light); text-align:center; flex-shrink:0; }
+  .ft{background:var(--white);border-top:1px solid var(--border);padding:.35rem;font-size:.6rem;color:var(--text-l);text-align:center;flex-shrink:0}
 
-  /* ── Mobile ── */
-  @media (max-width:1024px) {
-    html,body { overflow:auto; }
-    .page { height:auto; }
-    .main { flex-direction:column; }
-    .left-panel { width:100%; flex-direction:row; flex-wrap:wrap; border-right:none; border-bottom:1px solid var(--border); }
-    .lp-section { flex:1; min-width:200px; }
-    .map-panel { min-height:55vh; }
-    .right-panel { width:100%; border-left:none; border-top:1px solid var(--border); }
+  @media(max-width:1024px){
+    html,body{overflow:auto} .page{height:auto} .main{flex-direction:column}
+    .lp{width:100%;border-right:none;border-bottom:1px solid var(--border);display:flex;flex-wrap:wrap}
+    .lp-s{flex:1;min-width:180px}
+    .mp{min-height:50vh} .rp{width:100%;border-left:none;border-top:1px solid var(--border)}
   }
 </style>
 </head>
 <body>
 <div class="page">
-
-<!-- HEADER -->
-<div class="header">
-  <div class="header-left">
-    <h1>☁️ <span>전국 날씨</span></h1>
-    <span class="header-date">2026.04.21 (월) 업데이트</span>
-  </div>
-  <a href="index.html" class="header-link">📰 데일리 브리핑 →</a>
+<div class="hd">
+  <div style="display:flex;align-items:center"><h1>☁️ <span>전국 날씨</span></h1><span class="hd-date">2026.04.21 (월)</span></div>
+  <a href="index.html" class="hd-link">📰 데일리 브리핑 →</a>
 </div>
 
-<!-- MAIN -->
 <div class="main">
 
-<!-- LEFT PANEL -->
-<div class="left-panel">
-
-  <!-- 기상특보 -->
-  <div class="lp-section">
-    <div class="lp-title">⚠️ 기상특보</div>
-    <div class="alert-box">
-      <div><span class="alert-badge cold">한파주의보</span> 강원남부·충남·전북</div>
-      <p class="alert-text">역대 가장 늦은 <strong>4월 한파특보</strong> 발령. 아침 기온 전날 대비 5~10° 급락.</p>
-    </div>
-    <div class="alert-box" style="margin-top:0.4rem;">
-      <div><span class="alert-badge warn">황사</span> 전국</div>
-      <p class="alert-text">중국발 황사 영향으로 미세먼지 농도 높음. 외출 시 마스크 착용 권장.</p>
-    </div>
+<!-- LEFT -->
+<div class="lp">
+  <!-- Alerts -->
+  <div class="lp-s">
+    <div class="lp-t">⚠️ 기상특보</div>
+    <div class="al"><span class="al-b c">한파주의보</span> 강원남부·충남·전북<p class="al-tx">역대 가장 늦은 4월 한파특보. 아침 5~10° 급락.</p></div>
+    <div class="al"><span class="al-b w">황사</span> 전국<p class="al-tx">미세먼지 높음. 외출 시 마스크 권장.</p></div>
   </div>
 
-  <!-- 오늘의 날씨 -->
-  <div class="lp-section">
-    <div class="lp-title">🌤️ 오늘의 날씨</div>
-    <p class="summary-text">전국 대체로 <strong>맑음</strong>, 밤부터 구름 많아짐. <strong>제주는 구름많음</strong>. 일교차가 15° 이상으로 매우 크니 겉옷을 챙기세요.</p>
-  </div>
-
-  <!-- 상세 정보 (서울 기준) -->
-  <div class="lp-section">
-    <div class="lp-title">📊 서울 상세 (기준)</div>
-    <div class="info-mini">
-      <div class="info-item">
-        <div class="info-item-label">💧 습도</div>
-        <div class="info-item-val">52%</div>
-      </div>
-      <div class="info-item">
-        <div class="info-item-label">💨 바람</div>
-        <div class="info-item-val">18.7<span style="font-size:0.6rem;font-weight:400"> km/h</span></div>
-        <div class="info-item-sub">서풍</div>
-      </div>
-      <div class="info-item">
-        <div class="info-item-label">☀️ 자외선</div>
-        <div class="info-item-val">4</div>
-        <div class="info-item-sub">보통</div>
-      </div>
-      <div class="info-item">
-        <div class="info-item-label">🌡️ 체감</div>
-        <div class="info-item-val">12°</div>
-        <div class="info-item-sub">서늘</div>
+  <!-- City Detail (default: 서울) -->
+  <div class="lp-s" id="detail-panel">
+    <div class="cd active" id="cd-seoul">
+      <div class="cd-hero">
+        <div class="cd-city">서울특별시</div>
+        <div class="cd-icon">☀️</div>
+        <div class="cd-temp">12°</div>
+        <div class="cd-cond">맑음</div>
+        <div class="cd-range"><span class="lo">6°</span> / <span class="hi">19°</span> · 일교차 13°</div>
       </div>
     </div>
-  </div>
-
-  <!-- 대기질 -->
-  <div class="lp-section">
-    <div class="lp-title">😷 대기질</div>
-    <div class="air-mini">
-      <div class="air-chip">
-        <div class="air-chip-label">미세먼지</div>
-        <div class="air-chip-val">54</div>
-        <span class="air-chip-badge normal">보통</span>
-      </div>
-      <div class="air-chip">
-        <div class="air-chip-label">초미세먼지</div>
-        <div class="air-chip-val">31</div>
-        <span class="air-chip-badge normal">보통</span>
+    <div class="cd" id="cd-other">
+      <div class="cd-hero">
+        <div class="cd-city" id="do-city"></div>
+        <div class="cd-icon" id="do-icon"></div>
+        <div class="cd-temp" id="do-temp"></div>
+        <div class="cd-cond" id="do-cond"></div>
+        <div class="cd-range" id="do-range"></div>
       </div>
     </div>
+    <div class="cd-hint" onclick="selectCity('seoul')">← 서울로 돌아가기</div>
   </div>
 
-  <!-- 일출/일몰 -->
-  <div class="lp-section">
-    <div class="lp-title">🌅 일출 / 일몰</div>
-    <div class="sun-mini">
-      <div><div class="sun-icon">🌅</div><div class="sun-label">일출</div><div class="sun-time">05:50</div></div>
-      <div><div class="sun-icon">🌇</div><div class="sun-label">일몰</div><div class="sun-time">19:12</div></div>
+  <!-- Info -->
+  <div class="lp-s">
+    <div class="lp-t">📊 상세 정보</div>
+    <div class="ig">
+      <div class="ig-i"><div class="ig-l">💧 습도</div><div class="ig-v">52%</div></div>
+      <div class="ig-i"><div class="ig-l">💨 바람</div><div class="ig-v">18.7<span style="font-size:.55rem;font-weight:400"> km/h</span></div><div class="ig-s">서풍</div></div>
+      <div class="ig-i"><div class="ig-l">☀️ 자외선</div><div class="ig-v">4</div><div class="ig-s">보통</div></div>
+      <div class="ig-i"><div class="ig-l">🌡️ 체감</div><div class="ig-v">12°</div><div class="ig-s">서늘</div></div>
     </div>
   </div>
-
+  <!-- Air -->
+  <div class="lp-s">
+    <div class="lp-t">😷 대기질</div>
+    <div class="am">
+      <div class="ac"><div class="ac-l">미세먼지</div><div class="ac-v">54</div><span class="ac-b">보통</span></div>
+      <div class="ac"><div class="ac-l">초미세먼지</div><div class="ac-v">31</div><span class="ac-b">보통</span></div>
+    </div>
+  </div>
+  <!-- Sun -->
+  <div class="lp-s">
+    <div class="lp-t">🌅 일출/일몰</div>
+    <div class="sn">
+      <div><div class="sn-i">🌅</div><div class="sn-l">일출</div><div class="sn-t">05:50</div></div>
+      <div><div class="sn-i">🌇</div><div class="sn-l">일몰</div><div class="sn-t">19:12</div></div>
+    </div>
+  </div>
 </div>
 
-<!-- MAP PANEL (center) -->
-<div class="map-panel">
-<div class="map-wrap">
-<svg viewBox="0 0 400 540" class="map-svg" xmlns="http://www.w3.org/2000/svg">
-  <!-- Sea background is handled by .map-panel background -->
-  <!-- Korea mainland -->
-  <path d="M155,30 L185,15 L220,20 L260,10 L290,25 L310,18 L330,35 L340,60 L335,90 L345,110 L340,130 L350,160 L338,175 L330,160 L310,170 L290,155 L285,175 L295,200 L280,220 L290,250 L270,270 L280,300 L265,320 L270,350 L250,370 L240,400 L220,410 L200,430 L180,420 L160,440 L140,430 L120,400 L130,370 L115,340 L125,310 L110,290 L120,260 L110,230 L125,200 L115,180 L130,155 L120,130 L135,110 L125,80 L140,55 Z"
-    fill="var(--land)" stroke="var(--land-stroke)" stroke-width="1.5"/>
-  <!-- 제주도 -->
-  <ellipse cx="175" cy="495" rx="50" ry="20" fill="var(--land)" stroke="var(--land-stroke)" stroke-width="1.5"/>
-  <!-- 울릉도 -->
-  <circle cx="370" cy="80" r="8" fill="var(--land)" stroke="var(--land-stroke)" stroke-width="1"/>
-  <text x="370" y="100" text-anchor="middle" style="font-size:7px;fill:#999;font-family:var(--sans)">울릉도</text>
+<!-- MAP -->
+<div class="mp">
+<div class="mw">
+<svg viewBox="0 0 500 600" xmlns="http://www.w3.org/2000/svg">
+  <!-- China (partial) -->
+  <path d="M0,0 L0,350 L60,330 L80,280 L70,240 L90,200 L80,150 L100,110 L90,60 L110,20 L140,0 Z" fill="var(--land-cn)" stroke="#ccc" stroke-width=".8" opacity=".6"/>
+  <text x="30" y="180" style="font-size:9px;fill:#bbb;font-family:var(--sans)">중국</text>
+
+  <!-- North Korea -->
+  <path d="M140,0 L110,20 L90,60 L100,110 L115,90 L130,80 L145,55 L155,30 L185,15 L220,20 L260,10 L290,25 L310,18 L300,0 Z" fill="var(--land-nk)" stroke="var(--stroke-nk)" stroke-width="1"/>
+  <text x="200" y="15" text-anchor="middle" style="font-size:8px;fill:#aaa;font-family:var(--sans)">북한</text>
+  <!-- Pyongyang dot -->
+  <circle cx="175" cy="32" r="3" fill="#999"/>
+  <text x="185" y="35" style="font-size:7px;fill:#aaa;font-family:var(--sans)">평양</text>
+
+  <!-- DMZ line -->
+  <line x1="115" y1="55" x2="310" y2="18" stroke="#e57373" stroke-width=".8" stroke-dasharray="4,3" opacity=".5"/>
+
+  <!-- South Korea -->
+  <path d="M155,30 L185,15 L220,20 L260,10 L290,25 L310,18 L330,35 L340,60 L335,90 L345,110 L340,130 L350,160 L338,175 L330,160 L310,170 L290,155 L285,175 L295,200 L280,220 L290,250 L270,270 L280,300 L265,320 L270,350 L250,370 L240,400 L220,410 L200,430 L180,420 L160,440 L140,430 L120,400 L130,370 L115,340 L125,310 L110,290 L120,260 L110,230 L125,200 L115,180 L130,155 L120,130 L135,110 L125,80 L140,55 Z" fill="var(--land)" stroke="var(--stroke)" stroke-width="1.5"/>
+
+  <!-- Jeju -->
+  <ellipse cx="175" cy="492" rx="50" ry="20" fill="var(--land)" stroke="var(--stroke)" stroke-width="1.5"/>
+  <!-- Ulleungdo -->
+  <circle cx="380" cy="80" r="7" fill="var(--land)" stroke="var(--stroke)" stroke-width="1"/>
+  <text x="380" y="97" text-anchor="middle" style="font-size:6.5px;fill:#999;font-family:var(--sans)">울릉도</text>
+  <!-- Dokdo -->
+  <circle cx="410" cy="85" r="3" fill="var(--land)" stroke="var(--stroke)" stroke-width=".8"/>
+  <text x="410" y="97" text-anchor="middle" style="font-size:5.5px;fill:#999;font-family:var(--sans)">독도</text>
+
+  <!-- Japan (partial) -->
+  <path d="M420,130 L430,110 L445,100 L460,115 L470,145 L480,180 L490,220 L485,260 L475,300 L460,340 L445,370 L435,400 L440,430 L450,460 L460,490 L455,510 L440,530 L420,540 L410,510 L415,480 L405,450 L410,420 L400,390 L405,360 L395,330 L400,300 L390,270 L395,240 L385,210 L390,180 L385,150 Z" fill="var(--land-jp)" stroke="var(--stroke-jp)" stroke-width=".8" opacity=".7"/>
+  <!-- Tsushima -->
+  <ellipse cx="350" cy="410" rx="10" ry="18" fill="var(--land-jp)" stroke="var(--stroke-jp)" stroke-width=".6" opacity=".6" transform="rotate(-15,350,410)"/>
+  <text x="430" y="300" style="font-size:10px;fill:#c4b08a;font-family:var(--sans)">일본</text>
+  <!-- Tokyo label -->
+  <circle cx="460" cy="255" r="2.5" fill="#c4b08a"/>
+  <text x="448" y="268" style="font-size:6.5px;fill:#bba880;font-family:var(--sans)">도쿄</text>
+
+  <!-- Sea labels -->
+  <text x="90" y="420" style="font-size:8px;fill:#9cc;font-family:var(--sans);letter-spacing:4px">서해</text>
+  <text x="340" y="450" style="font-size:8px;fill:#9cc;font-family:var(--sans);letter-spacing:4px">남해</text>
+  <text x="370" cy="180" y="180" style="font-size:8px;fill:#9cc;font-family:var(--sans);letter-spacing:3px">동해</text>
+
+  <!-- === CITY DOTS === -->
+  <g class="dot" data-city="seoul" onclick="selectCity('seoul')">
+    <circle cx="175" cy="95" r="5" fill="var(--green)"/>
+    <text x="186" y="88" class="dot-temp">12°</text>
+    <text x="186" y="100" class="dot-name">서울 ☀️</text>
+  </g>
+  <g class="dot" data-city="incheon" onclick="selectCity('incheon')">
+    <circle cx="150" cy="108" r="4" fill="var(--red)" opacity=".8"/>
+    <text x="122" y="105" class="dot-temp" style="font-size:9px">11°</text>
+    <text x="122" y="114" class="dot-name">인��</text>
+  </g>
+  <g class="dot" data-city="suwon" onclick="selectCity('suwon')">
+    <circle cx="178" cy="128" r="4" fill="var(--red)" opacity=".8"/>
+    <text x="189" y="126" class="dot-temp" style="font-size:9px">10°</text>
+    <text x="189" y="135" class="dot-name">수원</text>
+  </g>
+  <g class="dot" data-city="chuncheon" onclick="selectCity('chuncheon')">
+    <circle cx="218" cy="68" r="4" fill="var(--red)" opacity=".8"/>
+    <text x="229" y="66" class="dot-temp" style="font-size:9px">10°</text>
+    <text x="229" y="75" class="dot-name">춘천</text>
+  </g>
+  <g class="dot" data-city="gangneung" onclick="selectCity('gangneung')">
+    <circle cx="315" cy="82" r="4" fill="var(--red)" opacity=".8"/>
+    <text x="326" y="80" class="dot-temp" style="font-size:9px">15°</text>
+    <text x="326" y="89" class="dot-name">강릉</text>
+  </g>
+  <g class="dot" data-city="cheongju" onclick="selectCity('cheongju')">
+    <circle cx="215" cy="168" r="4" fill="var(--red)" opacity=".8"/>
+    <text x="226" y="166" class="dot-temp" style="font-size:9px">12°</text>
+    <text x="226" y="175" class="dot-name">청주</text>
+  </g>
+  <g class="dot" data-city="daejeon" onclick="selectCity('daejeon')">
+    <circle cx="195" cy="208" r="5" fill="var(--green)"/>
+    <text x="206" y="201" class="dot-temp">12°</text>
+    <text x="206" y="213" class="dot-name">대전 ☀️</text>
+  </g>
+  <g class="dot" data-city="jeonju" onclick="selectCity('jeonju')">
+    <circle cx="165" cy="258" r="4" fill="var(--red)" opacity=".8"/>
+    <text x="135" y="256" class="dot-temp" style="font-size:9px">12°</text>
+    <text x="135" y="265" class="dot-name">전주</text>
+  </g>
+  <g class="dot" data-city="gwangju" onclick="selectCity('gwangju')">
+    <circle cx="155" cy="328" r="5" fill="var(--green)"/>
+    <text x="123" y="321" class="dot-temp">13°</text>
+    <text x="123" y="333" class="dot-name">광주 ☀️</text>
+  </g>
+  <g class="dot" data-city="mokpo" onclick="selectCity('mokpo')">
+    <circle cx="122" cy="380" r="4" fill="var(--red)" opacity=".8"/>
+    <text x="92" y="378" class="dot-temp" style="font-size:9px">13°</text>
+    <text x="92" y="387" class="dot-name">목포</text>
+  </g>
+  <g class="dot" data-city="daegu" onclick="selectCity('daegu')">
+    <circle cx="270" cy="258" r="5" fill="var(--green)"/>
+    <text x="281" y="251" class="dot-temp">14°</text>
+    <text x="281" y="263" class="dot-name">대구 ☀️</text>
+  </g>
+  <g class="dot" data-city="ulsan" onclick="selectCity('ulsan')">
+    <circle cx="310" cy="288" r="4" fill="var(--red)" opacity=".8"/>
+    <text x="321" y="286" class="dot-temp" style="font-size:9px">14°</text>
+    <text x="321" y="295" class="dot-name">울산</text>
+  </g>
+  <g class="dot" data-city="busan" onclick="selectCity('busan')">
+    <circle cx="285" cy="338" r="5" fill="var(--green)"/>
+    <text x="296" y="331" class="dot-temp">15°</text>
+    <text x="296" y="343" class="dot-name">부산 ☀️</text>
+  </g>
+  <g class="dot" data-city="jeju" onclick="selectCity('jeju')">
+    <circle cx="175" cy="490" r="5" fill="var(--green)"/>
+    <text x="192" y="485" class="dot-temp">13°</text>
+    <text x="192" y="497" class="dot-name">제주 ⛅</text>
+  </g>
 </svg>
-
-<!-- City labels -->
-<div class="cl" style="top:15%;left:39%"><span class="cl-dot"></span><span class="cl-icon">☀️</span><span class="cl-name">서울</span><span class="cl-temp">12°</span></div>
-<div class="cl" style="top:18%;left:27%"><span class="cl-dot"></span><span class="cl-icon">☀️</span><span class="cl-name">인천</span><span class="cl-temp">11°</span></div>
-<div class="cl" style="top:23%;left:41%"><span class="cl-dot"></span><span class="cl-icon">☀️</span><span class="cl-name">수원</span><span class="cl-temp">10°</span></div>
-<div class="cl" style="top:10%;left:53%"><span class="cl-dot"></span><span class="cl-icon">☀️</span><span class="cl-name">춘천</span><span class="cl-temp">10°</span></div>
-<div class="cl" style="top:14%;left:74%"><span class="cl-dot"></span><span class="cl-icon">☀️</span><span class="cl-name">강릉</span><span class="cl-temp">15°</span></div>
-<div class="cl" style="top:30%;left:48%"><span class="cl-dot"></span><span class="cl-icon">☀️</span><span class="cl-name">청주</span><span class="cl-temp">12°</span></div>
-<div class="cl" style="top:38%;left:41%"><span class="cl-dot"></span><span class="cl-icon">☀️</span><span class="cl-name">대전</span><span class="cl-temp">12°</span></div>
-<div class="cl" style="top:47%;left:33%"><span class="cl-dot"></span><span class="cl-icon">☀️</span><span class="cl-name">전주</span><span class="cl-temp">12°</span></div>
-<div class="cl" style="top:60%;left:28%"><span class="cl-dot"></span><span class="cl-icon">☀️</span><span class="cl-name">광주</span><span class="cl-temp">13°</span></div>
-<div class="cl" style="top:70%;left:19%"><span class="cl-dot"></span><span class="cl-icon">☀️</span><span class="cl-name">목포</span><span class="cl-temp">13°</span></div>
-<div class="cl" style="top:48%;left:63%"><span class="cl-dot"></span><span class="cl-icon">☀️</span><span class="cl-name">대구</span><span class="cl-temp">14°</span></div>
-<div class="cl" style="top:54%;left:75%"><span class="cl-dot"></span><span class="cl-icon">☀️</span><span class="cl-name">울산</span><span class="cl-temp">14°</span></div>
-<div class="cl" style="top:63%;left:67%"><span class="cl-dot"></span><span class="cl-icon">☀️</span><span class="cl-name">부산</span><span class="cl-temp">15°</span></div>
-<div class="cl" style="top:91%;left:40%"><span class="cl-dot"></span><span class="cl-icon">⛅</span><span class="cl-name">제주</span><span class="cl-temp">13°</span></div>
 </div>
 </div>
 
-<!-- RIGHT PANEL -->
-<div class="right-panel">
-  <div class="rp-header">📋 전국 14개 도시</div>
-  <div class="city-list">
-    <div class="cr"><span class="cr-icon">☀️</span><span class="cr-name">서울</span><span class="cr-temp">12°</span><div class="cr-bar-wrap"><span class="cr-lo">6°</span><div class="cr-bar"><div class="cr-bar-fill" style="left:15%;width:50%"></div></div><span class="cr-hi">19°</span></div></div>
-    <div class="cr"><span class="cr-icon">☀️</span><span class="cr-name">인천</span><span class="cr-temp">11°</span><div class="cr-bar-wrap"><span class="cr-lo">7°</span><div class="cr-bar"><div class="cr-bar-fill" style="left:20%;width:38%"></div></div><span class="cr-hi">17°</span></div></div>
-    <div class="cr"><span class="cr-icon">☀️</span><span class="cr-name">수원</span><span class="cr-temp">10°</span><div class="cr-bar-wrap"><span class="cr-lo">4°</span><div class="cr-bar"><div class="cr-bar-fill" style="left:8%;width:54%"></div></div><span class="cr-hi">18°</span></div></div>
-    <div class="cr"><span class="cr-icon">☀️</span><span class="cr-name">춘천</span><span class="cr-temp">10°</span><div class="cr-bar-wrap"><span class="cr-lo">3°</span><div class="cr-bar"><div class="cr-bar-fill" style="left:3%;width:65%"></div></div><span class="cr-hi">20°</span></div></div>
-    <div class="cr"><span class="cr-icon">☀️</span><span class="cr-name">강릉</span><span class="cr-temp">15°</span><div class="cr-bar-wrap"><span class="cr-lo">10°</span><div class="cr-bar"><div class="cr-bar-fill" style="left:30%;width:42%"></div></div><span class="cr-hi">21°</span></div></div>
-    <div class="cr"><span class="cr-icon">☀️</span><span class="cr-name">청주</span><span class="cr-temp">12°</span><div class="cr-bar-wrap"><span class="cr-lo">4°</span><div class="cr-bar"><div class="cr-bar-fill" style="left:8%;width:65%"></div></div><span class="cr-hi">21°</span></div></div>
-    <div class="cr"><span class="cr-icon">☀️</span><span class="cr-name">대전</span><span class="cr-temp">12°</span><div class="cr-bar-wrap"><span class="cr-lo">4°</span><div class="cr-bar"><div class="cr-bar-fill" style="left:8%;width:62%"></div></div><span class="cr-hi">20°</span></div></div>
-    <div class="cr"><span class="cr-icon">☀️</span><span class="cr-name">전주</span><span class="cr-temp">12°</span><div class="cr-bar-wrap"><span class="cr-lo">5°</span><div class="cr-bar"><div class="cr-bar-fill" style="left:12%;width:58%"></div></div><span class="cr-hi">20°</span></div></div>
-    <div class="cr"><span class="cr-icon">☀️</span><span class="cr-name">광주</span><span class="cr-temp">13°</span><div class="cr-bar-wrap"><span class="cr-lo">5°</span><div class="cr-bar"><div class="cr-bar-fill" style="left:12%;width:65%"></div></div><span class="cr-hi">22°</span></div></div>
-    <div class="cr"><span class="cr-icon">☀️</span><span class="cr-name">목포</span><span class="cr-temp">13°</span><div class="cr-bar-wrap"><span class="cr-lo">7°</span><div class="cr-bar"><div class="cr-bar-fill" style="left:20%;width:46%"></div></div><span class="cr-hi">19°</span></div></div>
-    <div class="cr"><span class="cr-icon">☀️</span><span class="cr-name">대구</span><span class="cr-temp">14°</span><div class="cr-bar-wrap"><span class="cr-lo">6°</span><div class="cr-bar"><div class="cr-bar-fill" style="left:15%;width:65%"></div></div><span class="cr-hi">23°</span></div></div>
-    <div class="cr"><span class="cr-icon">☀️</span><span class="cr-name">부산</span><span class="cr-temp">15°</span><div class="cr-bar-wrap"><span class="cr-lo">11°</span><div class="cr-bar"><div class="cr-bar-fill" style="left:32%;width:35%"></div></div><span class="cr-hi">20°</span></div></div>
-    <div class="cr"><span class="cr-icon">☀️</span><span class="cr-name">울산</span><span class="cr-temp">14°</span><div class="cr-bar-wrap"><span class="cr-lo">9°</span><div class="cr-bar"><div class="cr-bar-fill" style="left:26%;width:46%"></div></div><span class="cr-hi">21°</span></div></div>
-    <div class="cr"><span class="cr-icon">⛅</span><span class="cr-name">제주</span><span class="cr-temp">13°</span><div class="cr-bar-wrap"><span class="cr-lo">8°</span><div class="cr-bar"><div class="cr-bar-fill" style="left:22%;width:42%"></div></div><span class="cr-hi">19°</span></div></div>
+<!-- RIGHT -->
+<div class="rp">
+  <div class="rp-h">📋 전국 14개 도시 <span style="font-weight:400;color:var(--text-l)">· 클릭하면 상세보기</span></div>
+  <div class="cl">
+    <div class="cr sel" data-city="seoul" onclick="selectCity('seoul')"><span class="cr-i">☀️</span><span class="cr-n">서울</span><span class="cr-t">12°</span><div class="cr-bw"><span class="cr-lo">6°</span><div class="cr-b"><div class="cr-bf" style="left:15%;width:50%"></div></div><span class="cr-hi">19°</span></div></div>
+    <div class="cr" data-city="incheon" onclick="selectCity('incheon')"><span class="cr-i">☀️</span><span class="cr-n">인천</span><span class="cr-t">11°</span><div class="cr-bw"><span class="cr-lo">7°</span><div class="cr-b"><div class="cr-bf" style="left:20%;width:38%"></div></div><span class="cr-hi">17°</span></div></div>
+    <div class="cr" data-city="suwon" onclick="selectCity('suwon')"><span class="cr-i">☀️</span><span class="cr-n">수원</span><span class="cr-t">10°</span><div class="cr-bw"><span class="cr-lo">4°</span><div class="cr-b"><div class="cr-bf" style="left:8%;width:54%"></div></div><span class="cr-hi">18°</span></div></div>
+    <div class="cr" data-city="chuncheon" onclick="selectCity('chuncheon')"><span class="cr-i">☀️</span><span class="cr-n">춘천</span><span class="cr-t">10°</span><div class="cr-bw"><span class="cr-lo">3°</span><div class="cr-b"><div class="cr-bf" style="left:3%;width:65%"></div></div><span class="cr-hi">20°</span></div></div>
+    <div class="cr" data-city="gangneung" onclick="selectCity('gangneung')"><span class="cr-i">☀️</span><span class="cr-n">강릉</span><span class="cr-t">15°</span><div class="cr-bw"><span class="cr-lo">10°</span><div class="cr-b"><div class="cr-bf" style="left:30%;width:42%"></div></div><span class="cr-hi">21°</span></div></div>
+    <div class="cr" data-city="cheongju" onclick="selectCity('cheongju')"><span class="cr-i">☀️</span><span class="cr-n">청주</span><span class="cr-t">12°</span><div class="cr-bw"><span class="cr-lo">4°</span><div class="cr-b"><div class="cr-bf" style="left:8%;width:65%"></div></div><span class="cr-hi">21°</span></div></div>
+    <div class="cr" data-city="daejeon" onclick="selectCity('daejeon')"><span class="cr-i">☀️</span><span class="cr-n">대전</span><span class="cr-t">12°</span><div class="cr-bw"><span class="cr-lo">4°</span><div class="cr-b"><div class="cr-bf" style="left:8%;width:62%"></div></div><span class="cr-hi">20°</span></div></div>
+    <div class="cr" data-city="jeonju" onclick="selectCity('jeonju')"><span class="cr-i">☀️</span><span class="cr-n">전주</span><span class="cr-t">12°</span><div class="cr-bw"><span class="cr-lo">5°</span><div class="cr-b"><div class="cr-bf" style="left:12%;width:58%"></div></div><span class="cr-hi">20°</span></div></div>
+    <div class="cr" data-city="gwangju" onclick="selectCity('gwangju')"><span class="cr-i">☀️</span><span class="cr-n">광주</span><span class="cr-t">13°</span><div class="cr-bw"><span class="cr-lo">5°</span><div class="cr-b"><div class="cr-bf" style="left:12%;width:65%"></div></div><span class="cr-hi">22°</span></div></div>
+    <div class="cr" data-city="mokpo" onclick="selectCity('mokpo')"><span class="cr-i">☀️</span><span class="cr-n">목포</span><span class="cr-t">13°</span><div class="cr-bw"><span class="cr-lo">7°</span><div class="cr-b"><div class="cr-bf" style="left:20%;width:46%"></div></div><span class="cr-hi">19°</span></div></div>
+    <div class="cr" data-city="daegu" onclick="selectCity('daegu')"><span class="cr-i">☀️</span><span class="cr-n">대구</span><span class="cr-t">14°</span><div class="cr-bw"><span class="cr-lo">6°</span><div class="cr-b"><div class="cr-bf" style="left:15%;width:65%"></div></div><span class="cr-hi">23°</span></div></div>
+    <div class="cr" data-city="busan" onclick="selectCity('busan')"><span class="cr-i">☀️</span><span class="cr-n">부산</span><span class="cr-t">15°</span><div class="cr-bw"><span class="cr-lo">11°</span><div class="cr-b"><div class="cr-bf" style="left:32%;width:35%"></div></div><span class="cr-hi">20°</span></div></div>
+    <div class="cr" data-city="ulsan" onclick="selectCity('ulsan')"><span class="cr-i">☀️</span><span class="cr-n">울산</span><span class="cr-t">14°</span><div class="cr-bw"><span class="cr-lo">9°</span><div class="cr-b"><div class="cr-bf" style="left:26%;width:46%"></div></div><span class="cr-hi">21°</span></div></div>
+    <div class="cr" data-city="jeju" onclick="selectCity('jeju')"><span class="cr-i">⛅</span><span class="cr-n">제주</span><span class="cr-t">13°</span><div class="cr-bw"><span class="cr-lo">8°</span><div class="cr-b"><div class="cr-bf" style="left:22%;width:42%"></div></div><span class="cr-hi">19°</span></div></div>
   </div>
 </div>
 
-</div><!-- .main -->
+</div>
+<div class="ft">데��터: 기상청 · AccuWeather | Powered by Claude Code</div>
+</div>
 
-<div class="footer-bar">데이터: 기상청 · AccuWeather 기반 | Powered by Claude Code | <a href="index.html" style="color:var(--green);text-decoration:none;">📰 데일리 브리핑</a></div>
+<script>
+const cities = {
+  seoul:{name:'서울특별시',icon:'☀️',temp:'12°',cond:'맑음',lo:'6°',hi:'19°',diff:'13°'},
+  incheon:{name:'인천광역시',icon:'☀️',temp:'11°',cond:'맑음',lo:'7°',hi:'17°',diff:'10°'},
+  suwon:{name:'경기 수원시',icon:'☀️',temp:'10°',cond:'맑음',lo:'4°',hi:'18°',diff:'14°'},
+  chuncheon:{name:'강원 춘천시',icon:'☀️',temp:'10°',cond:'맑음',lo:'3°',hi:'20°',diff:'17°'},
+  gangneung:{name:'강원 강릉시',icon:'☀️',temp:'15°',cond:'맑음',lo:'10°',hi:'21°',diff:'11°'},
+  cheongju:{name:'충북 청주시',icon:'☀️',temp:'12°',cond:'맑음',lo:'4°',hi:'21°',diff:'17°'},
+  daejeon:{name:'���전광역시',icon:'☀️',temp:'12°',cond:'맑음',lo:'4°',hi:'20°',diff:'16°'},
+  jeonju:{name:'전북 전주시',icon:'☀️',temp:'12°',cond:'맑음',lo:'5°',hi:'20°',diff:'15°'},
+  gwangju:{name:'광주광역시',icon:'☀️',temp:'13°',cond:'맑음',lo:'5°',hi:'22°',diff:'17°'},
+  mokpo:{name:'전남 목포시',icon:'☀️',temp:'13°',cond:'맑음',lo:'7°',hi:'19°',diff:'12°'},
+  daegu:{name:'대구광역시',icon:'☀️',temp:'14°',cond:'맑음',lo:'6°',hi:'23°',diff:'17°'},
+  busan:{name:'부산광역시',icon:'☀️',temp:'15°',cond:'맑음',lo:'11°',hi:'20°',diff:'9°'},
+  ulsan:{name:'울산광역시',icon:'☀️',temp:'14°',cond:'맑음',lo:'9°',hi:'21°',diff:'12°'},
+  jeju:{name:'제주특별자치도',icon:'⛅',temp:'13°',cond:'구름많음',lo:'8°',hi:'19°',diff:'11°'}
+};
 
-</div><!-- .page -->
+function selectCity(id) {
+  const c = cities[id];
+  if (!c) return;
+
+  // Update left panel
+  if (id === 'seoul') {
+    document.getElementById('cd-seoul').classList.add('active');
+    document.getElementById('cd-other').classList.remove('active');
+  } else {
+    document.getElementById('cd-seoul').classList.remove('active');
+    document.getElementById('cd-other').classList.add('active');
+    document.getElementById('do-city').textContent = c.name;
+    document.getElementById('do-icon').textContent = c.icon;
+    document.getElementById('do-temp').textContent = c.temp;
+    document.getElementById('do-cond').textContent = c.cond;
+    document.getElementById('do-range').innerHTML = '<span class="lo">'+c.lo+'</span> / <span class="hi">'+c.hi+'</span> · 일교차 '+c.diff;
+  }
+
+  // Highlight right panel row
+  document.querySelectorAll('.cr').forEach(r => r.classList.remove('sel'));
+  const row = document.querySelector('.cr[data-city="'+id+'"]');
+  if (row) { row.classList.add('sel'); row.scrollIntoView({block:'nearest'}); }
+
+  // Highlight map dot
+  document.querySelectorAll('.dot').forEach(d => d.classList.remove('sel'));
+  const dot = document.querySelector('.dot[data-city="'+id+'"]');
+  if (dot) dot.classList.add('sel');
+}
+</script>
 </body>
 </html>
