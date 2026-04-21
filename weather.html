@@ -3,22 +3,19 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>날씨 | 서울 | 2026년 4월 21일</title>
+<title>전국 날씨 | 2026년 4월 21일</title>
 <style>
   @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700;900&display=swap');
 
   :root {
     --bg: #121212;
     --card: #1e1e1e;
-    --navy: #ffffff;
-    --navy-light: #e0e0e0;
-    --gold: #FF6B35;
+    --card-hover: #252525;
+    --orange: #FF6B35;
+    --orange-dim: rgba(255,107,53,0.15);
     --blue: #4FC3F7;
-    --blue-light: #81D4FA;
-    --sky-start: #1a1a1a;
-    --sky-end: #2d2d2d;
     --text: #e0e0e0;
-    --text-light: #888;
+    --text-dim: #777;
     --border: #2a2a2a;
     --good: #4FC3F7;
     --normal: #66BB6A;
@@ -32,507 +29,507 @@
     font-family: var(--sans);
     color: var(--text);
     -webkit-font-smoothing: antialiased;
-    max-width: 480px;
-    margin: 0 auto;
   }
 
-  /* ── Hero / Current Weather ── */
-  .hero {
-    background: linear-gradient(135deg, #1a1a1a, #2d2d2d);
-    border-bottom: 2px solid var(--gold);
-    color: #fff;
-    padding: 2rem 1.5rem 1.8rem;
+  /* ── Header ── */
+  .header {
+    background: #1a1a1a;
+    border-bottom: 2px solid var(--orange);
+    padding: 1.5rem 1rem;
     text-align: center;
-    position: relative;
-    overflow: hidden;
   }
-  .hero::before {
-    content: '';
-    position: absolute;
-    top: -50%;
-    right: -30%;
-    width: 200px;
-    height: 200px;
-    background: rgba(255,255,255,0.06);
-    border-radius: 50%;
-  }
-  .hero-location {
-    font-size: 0.85rem;
-    font-weight: 500;
-    letter-spacing: 0.05em;
-    opacity: 0.8;
-    margin-bottom: 0.3rem;
-  }
-  .hero-date {
-    font-size: 0.75rem;
-    opacity: 0.6;
-    margin-bottom: 1.2rem;
-  }
-  .hero-icon {
-    font-size: 3.5rem;
-    margin-bottom: 0.3rem;
-    filter: drop-shadow(0 2px 8px rgba(0,0,0,0.15));
-  }
-  .hero-temp {
-    font-size: 4.5rem;
+  .header h1 {
+    font-size: 1.6rem;
     font-weight: 900;
-    line-height: 1;
-    letter-spacing: -0.04em;
-  }
-  .hero-temp sup {
-    font-size: 2rem;
-    font-weight: 400;
-    vertical-align: super;
-  }
-  .hero-condition {
-    font-size: 1.1rem;
-    font-weight: 500;
-    margin: 0.3rem 0;
-  }
-  .hero-range {
-    font-size: 0.9rem;
-    opacity: 0.75;
-    margin-top: 0.2rem;
-  }
-  .hero-range .hi { color: #FF6B35; font-weight: 700; }
-  .hero-range .lo { color: #4FC3F7; font-weight: 700; }
-  .hero-feels {
-    font-size: 0.78rem;
-    opacity: 0.6;
-    margin-top: 0.5rem;
-  }
-
-  /* ── Cards ── */
-  .card {
-    background: var(--card);
-    border-radius: 14px;
-    margin: 0.8rem 1rem;
-    padding: 1.2rem;
-    box-shadow: 0 1px 4px rgba(0,0,0,0.06);
-  }
-  .card-title {
-    font-size: 0.78rem;
-    font-weight: 700;
-    color: var(--text-light);
-    letter-spacing: 0.04em;
-    margin-bottom: 1rem;
-    display: flex;
-    align-items: center;
-    gap: 0.4rem;
-  }
-  .card-title-icon {
-    font-size: 0.9rem;
-  }
-
-  /* ── Hourly Forecast ── */
-  .hourly-scroll {
-    display: flex;
-    gap: 0;
-    overflow-x: auto;
-    scrollbar-width: none;
-    -ms-overflow-style: none;
-    margin: 0 -0.3rem;
-  }
-  .hourly-scroll::-webkit-scrollbar { display: none; }
-  .hourly-item {
-    flex: 0 0 auto;
-    width: 64px;
-    text-align: center;
-    padding: 0.5rem 0.3rem;
-  }
-  .hourly-item.now {
-    background: rgba(255,107,53,0.15);
-    border-radius: 12px;
-  }
-  .hourly-time {
-    font-size: 0.72rem;
-    color: var(--text-light);
-    margin-bottom: 0.5rem;
-    font-weight: 500;
-  }
-  .hourly-item.now .hourly-time {
-    color: var(--gold);
-    font-weight: 700;
-  }
-  .hourly-icon {
-    font-size: 1.4rem;
-    margin-bottom: 0.4rem;
-  }
-  .hourly-temp {
-    font-size: 0.95rem;
-    font-weight: 700;
-    color: var(--navy);
-  }
-
-  /* ── Weekly Forecast ── */
-  .weekly-row {
-    display: flex;
-    align-items: center;
-    padding: 0.7rem 0;
-    border-bottom: 1px solid var(--border);
-  }
-  .weekly-row:last-child { border-bottom: none; }
-  .weekly-day {
-    width: 36px;
-    font-size: 0.88rem;
-    font-weight: 700;
-    color: var(--navy);
-  }
-  .weekly-date {
-    width: 44px;
-    font-size: 0.75rem;
-    color: var(--text-light);
-  }
-  .weekly-icon {
-    width: 36px;
-    font-size: 1.2rem;
-    text-align: center;
-  }
-  .weekly-bar-wrap {
-    flex: 1;
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-    padding: 0 0.8rem;
-  }
-  .weekly-lo {
-    font-size: 0.82rem;
-    color: #4FC3F7;
-    font-weight: 500;
-    width: 28px;
-    text-align: right;
-  }
-  .weekly-bar {
-    flex: 1;
-    height: 5px;
-    background: #e9ecef;
-    border-radius: 3px;
-    position: relative;
-    overflow: hidden;
-  }
-  .weekly-bar-fill {
-    position: absolute;
-    height: 100%;
-    border-radius: 3px;
-    background: linear-gradient(90deg, var(--blue-light), #FF6B35);
-  }
-  .weekly-hi {
-    font-size: 0.82rem;
-    color: #FF6B35;
-    font-weight: 700;
-    width: 28px;
-  }
-
-  /* ── Info Grid ── */
-  .info-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 0.8rem;
-  }
-  .info-box {
-    background: var(--card);
-    border-radius: 14px;
-    padding: 1rem 1.2rem;
-    box-shadow: 0 1px 4px rgba(0,0,0,0.06);
-  }
-  .info-box-label {
-    font-size: 0.72rem;
-    color: var(--text-light);
-    font-weight: 500;
-    margin-bottom: 0.5rem;
-    display: flex;
-    align-items: center;
-    gap: 0.3rem;
-  }
-  .info-box-value {
-    font-size: 1.5rem;
-    font-weight: 900;
-    color: var(--navy);
-    line-height: 1.2;
-  }
-  .info-box-unit {
-    font-size: 0.75rem;
-    color: var(--text-light);
-    font-weight: 400;
-  }
-  .info-box-sub {
-    font-size: 0.72rem;
-    color: var(--text-light);
-    margin-top: 0.3rem;
-  }
-
-  /* ── Air Quality ── */
-  .air-row {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 0.8rem 0;
-    border-bottom: 1px solid var(--border);
-  }
-  .air-row:last-child { border-bottom: none; }
-  .air-label {
-    font-size: 0.85rem;
-    color: var(--text);
-  }
-  .air-right {
-    display: flex;
-    align-items: center;
-    gap: 0.6rem;
-  }
-  .air-value {
-    font-size: 0.85rem;
-    font-weight: 700;
-    color: var(--navy);
-  }
-  .air-badge {
-    font-size: 0.7rem;
-    font-weight: 700;
-    padding: 0.2em 0.6em;
-    border-radius: 10px;
-    color: #fff;
-  }
-  .air-badge.good { background: var(--good); }
-  .air-badge.normal { background: var(--normal); }
-  .air-badge.bad { background: var(--bad); }
-
-  /* ── Sun ── */
-  .sun-row {
-    display: flex;
-    justify-content: space-around;
-    text-align: center;
-  }
-  .sun-item-icon { font-size: 1.5rem; margin-bottom: 0.3rem; }
-  .sun-item-label {
-    font-size: 0.72rem;
-    color: var(--text-light);
-    margin-bottom: 0.15rem;
-  }
-  .sun-item-time {
-    font-size: 1.1rem;
-    font-weight: 700;
-    color: var(--navy);
-  }
-
-  /* ── Footer ── */
-  .weather-footer {
-    text-align: center;
-    padding: 1.5rem 1rem 2.5rem;
-    font-size: 0.7rem;
-    color: var(--text-light);
-  }
-
-  .info-grid-wrap {
-    margin: 0 1rem;
-  }
-
-  .hero-temp {
-    background: linear-gradient(135deg, #fff, #FF6B35);
+    background: linear-gradient(135deg, #fff, var(--orange));
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
   }
+  .header-date {
+    font-size: 0.78rem;
+    color: var(--text-dim);
+    margin-top: 0.3rem;
+  }
+  .header-alert {
+    display: inline-block;
+    margin-top: 0.8rem;
+    font-size: 0.72rem;
+    font-weight: 700;
+    color: #fff;
+    background: var(--orange);
+    padding: 0.3em 0.8em;
+    border-radius: 12px;
+  }
 
-  @media (min-width: 481px) {
-    body { border-left: 1px solid var(--border); border-right: 1px solid var(--border); }
+  /* ── Tabs ── */
+  .tabs {
+    display: flex;
+    justify-content: center;
+    gap: 0.3rem;
+    padding: 0.8rem 1rem;
+    background: #1a1a1a;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    flex-wrap: wrap;
+  }
+  .tab {
+    font-family: var(--sans);
+    font-size: 0.75rem;
+    font-weight: 500;
+    padding: 0.4em 0.9em;
+    border: 1.5px solid var(--border);
+    border-radius: 18px;
+    background: transparent;
+    color: var(--text-dim);
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  .tab:hover { border-color: var(--orange); color: var(--text); }
+  .tab.active {
+    background: var(--orange);
+    border-color: var(--orange);
+    color: #fff;
+    font-weight: 700;
+  }
+
+  /* ── Container ── */
+  .container { max-width: 800px; margin: 0 auto; padding: 0 1rem; }
+
+  /* ── Map Section ── */
+  .map-section {
+    padding: 1.5rem 0;
+  }
+  .map-wrap {
+    position: relative;
+    max-width: 420px;
+    margin: 0 auto;
+    padding: 1rem;
+  }
+  .map-svg { width: 100%; height: auto; }
+  .map-city {
+    cursor: pointer;
+    transition: transform 0.2s;
+  }
+  .map-city:hover { transform: scale(1.15); }
+  .map-city-dot {
+    fill: var(--orange);
+    filter: drop-shadow(0 0 4px rgba(255,107,53,0.5));
+  }
+  .map-city-temp {
+    font-family: 'Noto Sans KR', sans-serif;
+    font-size: 13px;
+    font-weight: 900;
+    fill: #fff;
+  }
+  .map-city-name {
+    font-family: 'Noto Sans KR', sans-serif;
+    font-size: 9px;
+    fill: #999;
+  }
+  .map-city-icon {
+    font-size: 14px;
+  }
+
+  /* ── Overview Card ── */
+  .overview {
+    background: var(--card);
+    border-radius: 14px;
+    padding: 1.2rem;
+    margin-bottom: 1rem;
+    border-left: 3px solid var(--orange);
+  }
+  .overview p {
+    font-size: 0.88rem;
+    line-height: 1.7;
+    color: var(--text);
+  }
+  .overview strong { color: var(--orange); }
+
+  /* ── City Grid ── */
+  .city-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(170px, 1fr));
+    gap: 0.6rem;
+    padding-bottom: 1.5rem;
+  }
+  .city-card {
+    background: var(--card);
+    border-radius: 12px;
+    padding: 1rem;
+    transition: all 0.2s;
+    cursor: default;
+    border: 1px solid transparent;
+  }
+  .city-card:hover {
+    background: var(--card-hover);
+    border-color: var(--orange);
+  }
+  .city-card-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 0.5rem;
+  }
+  .city-name {
+    font-size: 0.88rem;
+    font-weight: 700;
+    color: #fff;
+  }
+  .city-icon { font-size: 1.6rem; }
+  .city-temp {
+    font-size: 2rem;
+    font-weight: 900;
+    color: #fff;
+    line-height: 1;
+    margin-bottom: 0.3rem;
+  }
+  .city-temp sup {
+    font-size: 1rem;
+    font-weight: 400;
+    color: var(--text-dim);
+  }
+  .city-range {
+    font-size: 0.75rem;
+    color: var(--text-dim);
+  }
+  .city-range .hi { color: var(--orange); font-weight: 700; }
+  .city-range .lo { color: var(--blue); font-weight: 500; }
+  .city-condition {
+    font-size: 0.72rem;
+    color: var(--text-dim);
+    margin-top: 0.2rem;
+  }
+
+  /* ── Region sections ── */
+  .region-section { display: none; }
+  .region-section.active { display: block; }
+
+  /* ── Footer ── */
+  .footer {
+    text-align: center;
+    padding: 2rem 1rem;
+    font-size: 0.7rem;
+    color: var(--text-dim);
+    border-top: 1px solid var(--border);
+  }
+  .footer a {
+    color: var(--orange);
+    text-decoration: none;
   }
 </style>
 </head>
 <body>
 
-<!-- ══ HERO ══ -->
-<div class="hero">
-  <p class="hero-location">📍 서울특별시</p>
-  <p class="hero-date">2026년 4월 21일 (월) 업데이트</p>
-  <div class="hero-icon">☀️</div>
-  <div class="hero-temp">14<sup>°</sup></div>
-  <p class="hero-condition">맑음</p>
-  <p class="hero-range"><span class="lo">10°</span> / <span class="hi">17°</span></p>
-  <p class="hero-feels">체감온도 12°</p>
+<!-- ══ HEADER ══ -->
+<div class="header">
+  <h1>🌤️ 전국 날씨</h1>
+  <p class="header-date">2026년 4월 21일 (월) 업데이트</p>
+  <span class="header-alert">⚠️ 역대 가장 늦은 4월 한파특보 · 일교차 15°↑ 주의</span>
 </div>
 
-<!-- ══ HOURLY ══ -->
-<div class="card">
-  <div class="card-title"><span class="card-title-icon">🕐</span> 시간대별 예보</div>
-  <div class="hourly-scroll">
-    <div class="hourly-item now">
-      <div class="hourly-time">지금</div>
-      <div class="hourly-icon">☀️</div>
-      <div class="hourly-temp">14°</div>
-    </div>
-    <div class="hourly-item">
-      <div class="hourly-time">06시</div>
-      <div class="hourly-icon">🌅</div>
-      <div class="hourly-temp">10°</div>
-    </div>
-    <div class="hourly-item">
-      <div class="hourly-time">09시</div>
-      <div class="hourly-icon">☀️</div>
-      <div class="hourly-temp">12°</div>
-    </div>
-    <div class="hourly-item">
-      <div class="hourly-time">12시</div>
-      <div class="hourly-icon">☀️</div>
-      <div class="hourly-temp">15°</div>
-    </div>
-    <div class="hourly-item">
-      <div class="hourly-time">15시</div>
-      <div class="hourly-icon">☀️</div>
-      <div class="hourly-temp">17°</div>
-    </div>
-    <div class="hourly-item">
-      <div class="hourly-time">18시</div>
-      <div class="hourly-icon">🌤️</div>
-      <div class="hourly-temp">15°</div>
-    </div>
-    <div class="hourly-item">
-      <div class="hourly-time">21시</div>
-      <div class="hourly-icon">🌙</div>
-      <div class="hourly-temp">12°</div>
-    </div>
+<!-- ══ TABS ══ -->
+<div class="tabs">
+  <button class="tab active" data-region="all">전국 지도</button>
+  <button class="tab" data-region="metro">수도권</button>
+  <button class="tab" data-region="gangwon">강원</button>
+  <button class="tab" data-region="chungcheong">충청</button>
+  <button class="tab" data-region="honam">호남</button>
+  <button class="tab" data-region="yeongnam">영남</button>
+  <button class="tab" data-region="jeju">제주</button>
+</div>
+
+<div class="container">
+
+<!-- ══ OVERVIEW ══ -->
+<div class="overview">
+  <p>전국 대체로 <strong>맑음</strong>, 밤부터 구름 많아짐. <strong>제주는 구름많음</strong>. 아침 기온이 전날 대비 5~10도 급락하는 <strong>꽃샘추위</strong>. 황사 영향으로 미세먼지 높음. 일교차가 매우 크니 겉옷을 챙기세요.</p>
+</div>
+
+<!-- ══ MAP (all) ══ -->
+<div class="region-section active" data-content="all">
+<div class="map-section">
+<div class="map-wrap">
+<svg viewBox="0 0 400 520" class="map-svg" xmlns="http://www.w3.org/2000/svg">
+  <!-- Korea outline (simplified) -->
+  <path d="M155,30 L185,15 L220,20 L260,10 L290,25 L310,18 L330,35 L340,60 L335,90 L345,110 L340,130 L350,160 L338,175 L330,160 L310,170 L290,155 L285,175 L295,200 L280,220 L290,250 L270,270 L280,300 L265,320 L270,350 L250,370 L240,400 L220,410 L200,430 L180,420 L160,440 L140,430 L120,400 L130,370 L115,340 L125,310 L110,290 L120,260 L110,230 L125,200 L115,180 L130,155 L120,130 L135,110 L125,80 L140,55 Z"
+    fill="#2a2a2a" stroke="#3a3a3a" stroke-width="1.5"/>
+
+  <!-- Jeju Island -->
+  <ellipse cx="175" cy="490" rx="50" ry="20" fill="#2a2a2a" stroke="#3a3a3a" stroke-width="1.5"/>
+
+  <!-- City markers -->
+  <!-- Seoul -->
+  <g class="map-city" transform="translate(175,95)">
+    <circle r="5" class="map-city-dot"/>
+    <text x="10" y="-8" class="map-city-temp">12°</text>
+    <text x="10" y="5" class="map-city-name">서울 ☀️</text>
+    <text x="10" y="16" class="map-city-name" style="fill:#555">6° / 19°</text>
+  </g>
+
+  <!-- Incheon -->
+  <g class="map-city" transform="translate(148,108)">
+    <circle r="4" class="map-city-dot" style="fill:#e05a2e"/>
+    <text x="-52" y="-5" class="map-city-temp" style="font-size:11px">11°</text>
+    <text x="-52" y="7" class="map-city-name">인천 ☀️</text>
+  </g>
+
+  <!-- Suwon -->
+  <g class="map-city" transform="translate(175,130)">
+    <circle r="4" class="map-city-dot" style="fill:#e05a2e"/>
+    <text x="10" y="-3" class="map-city-temp" style="font-size:11px">10°</text>
+    <text x="10" y="9" class="map-city-name">수원 ☀️</text>
+  </g>
+
+  <!-- Chuncheon -->
+  <g class="map-city" transform="translate(215,70)">
+    <circle r="4" class="map-city-dot" style="fill:#e05a2e"/>
+    <text x="10" y="-3" class="map-city-temp" style="font-size:11px">10°</text>
+    <text x="10" y="9" class="map-city-name">춘천 ☀️</text>
+  </g>
+
+  <!-- Gangneung -->
+  <g class="map-city" transform="translate(310,85)">
+    <circle r="4" class="map-city-dot" style="fill:#e05a2e"/>
+    <text x="-55" y="-3" class="map-city-temp" style="font-size:11px">15°</text>
+    <text x="-55" y="9" class="map-city-name">강릉 ☀️</text>
+  </g>
+
+  <!-- Cheongju -->
+  <g class="map-city" transform="translate(210,170)">
+    <circle r="4" class="map-city-dot" style="fill:#e05a2e"/>
+    <text x="10" y="-3" class="map-city-temp" style="font-size:11px">12°</text>
+    <text x="10" y="9" class="map-city-name">청주 ☀️</text>
+  </g>
+
+  <!-- Daejeon -->
+  <g class="map-city" transform="translate(190,210)">
+    <circle r="5" class="map-city-dot"/>
+    <text x="10" y="-8" class="map-city-temp">12°</text>
+    <text x="10" y="5" class="map-city-name">대전 ☀️</text>
+    <text x="10" y="16" class="map-city-name" style="fill:#555">4° / 20°</text>
+  </g>
+
+  <!-- Jeonju -->
+  <g class="map-city" transform="translate(160,260)">
+    <circle r="4" class="map-city-dot" style="fill:#e05a2e"/>
+    <text x="-50" y="-3" class="map-city-temp" style="font-size:11px">12°</text>
+    <text x="-50" y="9" class="map-city-name">전주 ☀️</text>
+  </g>
+
+  <!-- Gwangju -->
+  <g class="map-city" transform="translate(150,330)">
+    <circle r="5" class="map-city-dot"/>
+    <text x="-58" y="-8" class="map-city-temp">13°</text>
+    <text x="-58" y="5" class="map-city-name">광주 ☀️</text>
+    <text x="-58" y="16" class="map-city-name" style="fill:#555">5° / 22°</text>
+  </g>
+
+  <!-- Mokpo -->
+  <g class="map-city" transform="translate(120,380)">
+    <circle r="4" class="map-city-dot" style="fill:#e05a2e"/>
+    <text x="-50" y="-3" class="map-city-temp" style="font-size:11px">13°</text>
+    <text x="-50" y="9" class="map-city-name">목포 ☀️</text>
+  </g>
+
+  <!-- Daegu -->
+  <g class="map-city" transform="translate(265,260)">
+    <circle r="5" class="map-city-dot"/>
+    <text x="10" y="-8" class="map-city-temp">14°</text>
+    <text x="10" y="5" class="map-city-name">대구 ☀️</text>
+    <text x="10" y="16" class="map-city-name" style="fill:#555">6° / 23°</text>
+  </g>
+
+  <!-- Ulsan -->
+  <g class="map-city" transform="translate(305,290)">
+    <circle r="4" class="map-city-dot" style="fill:#e05a2e"/>
+    <text x="10" y="-3" class="map-city-temp" style="font-size:11px">14°</text>
+    <text x="10" y="9" class="map-city-name">울산 ☀️</text>
+  </g>
+
+  <!-- Busan -->
+  <g class="map-city" transform="translate(280,340)">
+    <circle r="5" class="map-city-dot"/>
+    <text x="10" y="-8" class="map-city-temp">15°</text>
+    <text x="10" y="5" class="map-city-name">부산 ☀️</text>
+    <text x="10" y="16" class="map-city-name" style="fill:#555">11° / 20°</text>
+  </g>
+
+  <!-- Jeju -->
+  <g class="map-city" transform="translate(175,488)">
+    <circle r="5" class="map-city-dot"/>
+    <text x="12" y="-8" class="map-city-temp">13°</text>
+    <text x="12" y="5" class="map-city-name">제주 ⛅</text>
+    <text x="12" y="16" class="map-city-name" style="fill:#555">8° / 19°</text>
+  </g>
+</svg>
+</div>
+</div>
+
+<!-- City Grid (all) -->
+<div class="city-grid">
+  <div class="city-card">
+    <div class="city-card-top"><span class="city-name">서울</span><span class="city-icon">☀️</span></div>
+    <div class="city-temp">12°<sup></sup></div>
+    <div class="city-range"><span class="lo">6°</span> / <span class="hi">19°</span></div>
+    <div class="city-condition">맑음 · 일교차 13°</div>
+  </div>
+  <div class="city-card">
+    <div class="city-card-top"><span class="city-name">인천</span><span class="city-icon">☀️</span></div>
+    <div class="city-temp">11°<sup></sup></div>
+    <div class="city-range"><span class="lo">7°</span> / <span class="hi">17°</span></div>
+    <div class="city-condition">맑음</div>
+  </div>
+  <div class="city-card">
+    <div class="city-card-top"><span class="city-name">수원</span><span class="city-icon">☀️</span></div>
+    <div class="city-temp">10°<sup></sup></div>
+    <div class="city-range"><span class="lo">4°</span> / <span class="hi">18°</span></div>
+    <div class="city-condition">맑음 · 일교차 14°</div>
+  </div>
+  <div class="city-card">
+    <div class="city-card-top"><span class="city-name">춘천</span><span class="city-icon">☀️</span></div>
+    <div class="city-temp">10°<sup></sup></div>
+    <div class="city-range"><span class="lo">3°</span> / <span class="hi">20°</span></div>
+    <div class="city-condition">맑음 · 일교차 17°</div>
+  </div>
+  <div class="city-card">
+    <div class="city-card-top"><span class="city-name">강릉</span><span class="city-icon">☀️</span></div>
+    <div class="city-temp">15°<sup></sup></div>
+    <div class="city-range"><span class="lo">10°</span> / <span class="hi">21°</span></div>
+    <div class="city-condition">맑음</div>
+  </div>
+  <div class="city-card">
+    <div class="city-card-top"><span class="city-name">대전</span><span class="city-icon">☀️</span></div>
+    <div class="city-temp">12°<sup></sup></div>
+    <div class="city-range"><span class="lo">4°</span> / <span class="hi">20°</span></div>
+    <div class="city-condition">맑음 · 일교차 16°</div>
+  </div>
+  <div class="city-card">
+    <div class="city-card-top"><span class="city-name">청주</span><span class="city-icon">☀️</span></div>
+    <div class="city-temp">12°<sup></sup></div>
+    <div class="city-range"><span class="lo">4°</span> / <span class="hi">21°</span></div>
+    <div class="city-condition">맑음 · 일교차 17°</div>
+  </div>
+  <div class="city-card">
+    <div class="city-card-top"><span class="city-name">전주</span><span class="city-icon">☀️</span></div>
+    <div class="city-temp">12°<sup></sup></div>
+    <div class="city-range"><span class="lo">5°</span> / <span class="hi">20°</span></div>
+    <div class="city-condition">맑음 · 일교차 15°</div>
+  </div>
+  <div class="city-card">
+    <div class="city-card-top"><span class="city-name">광주</span><span class="city-icon">☀️</span></div>
+    <div class="city-temp">13°<sup></sup></div>
+    <div class="city-range"><span class="lo">5°</span> / <span class="hi">22°</span></div>
+    <div class="city-condition">맑음 · 일교차 17°</div>
+  </div>
+  <div class="city-card">
+    <div class="city-card-top"><span class="city-name">목포</span><span class="city-icon">☀️</span></div>
+    <div class="city-temp">13°<sup></sup></div>
+    <div class="city-range"><span class="lo">7°</span> / <span class="hi">19°</span></div>
+    <div class="city-condition">맑음</div>
+  </div>
+  <div class="city-card">
+    <div class="city-card-top"><span class="city-name">대구</span><span class="city-icon">☀️</span></div>
+    <div class="city-temp">14°<sup></sup></div>
+    <div class="city-range"><span class="lo">6°</span> / <span class="hi">23°</span></div>
+    <div class="city-condition">맑음 · 일교차 17°</div>
+  </div>
+  <div class="city-card">
+    <div class="city-card-top"><span class="city-name">부산</span><span class="city-icon">☀️</span></div>
+    <div class="city-temp">15°<sup></sup></div>
+    <div class="city-range"><span class="lo">11°</span> / <span class="hi">20°</span></div>
+    <div class="city-condition">맑음</div>
+  </div>
+  <div class="city-card">
+    <div class="city-card-top"><span class="city-name">울산</span><span class="city-icon">☀️</span></div>
+    <div class="city-temp">14°<sup></sup></div>
+    <div class="city-range"><span class="lo">9°</span> / <span class="hi">21°</span></div>
+    <div class="city-condition">맑음</div>
+  </div>
+  <div class="city-card">
+    <div class="city-card-top"><span class="city-name">제주</span><span class="city-icon">⛅</span></div>
+    <div class="city-temp">13°<sup></sup></div>
+    <div class="city-range"><span class="lo">8°</span> / <span class="hi">19°</span></div>
+    <div class="city-condition">구름많음</div>
+  </div>
+</div>
+</div>
+
+<!-- ══ Region: 수도권 ══ -->
+<div class="region-section" data-content="metro">
+  <div class="city-grid">
+    <div class="city-card"><div class="city-card-top"><span class="city-name">서울</span><span class="city-icon">☀️</span></div><div class="city-temp">12°</div><div class="city-range"><span class="lo">6°</span> / <span class="hi">19°</span></div><div class="city-condition">맑음 · 일교차 13°</div></div>
+    <div class="city-card"><div class="city-card-top"><span class="city-name">인천</span><span class="city-icon">☀️</span></div><div class="city-temp">11°</div><div class="city-range"><span class="lo">7°</span> / <span class="hi">17°</span></div><div class="city-condition">맑음</div></div>
+    <div class="city-card"><div class="city-card-top"><span class="city-name">수원</span><span class="city-icon">☀️</span></div><div class="city-temp">10°</div><div class="city-range"><span class="lo">4°</span> / <span class="hi">18°</span></div><div class="city-condition">맑음 · 일교차 14°</div></div>
   </div>
 </div>
 
-<!-- ══ WEEKLY ══ -->
-<div class="card">
-  <div class="card-title"><span class="card-title-icon">📅</span> 주간 예보</div>
-  <div class="weekly-row">
-    <span class="weekly-day">오늘</span>
-    <span class="weekly-date">4/21</span>
-    <span class="weekly-icon">☀️</span>
-    <div class="weekly-bar-wrap">
-      <span class="weekly-lo">10°</span>
-      <div class="weekly-bar"><div class="weekly-bar-fill" style="left:10%;width:35%"></div></div>
-      <span class="weekly-hi">17°</span>
-    </div>
-  </div>
-  <div class="weekly-row">
-    <span class="weekly-day">화</span>
-    <span class="weekly-date">4/22</span>
-    <span class="weekly-icon">☀️</span>
-    <div class="weekly-bar-wrap">
-      <span class="weekly-lo">9°</span>
-      <div class="weekly-bar"><div class="weekly-bar-fill" style="left:8%;width:50%"></div></div>
-      <span class="weekly-hi">19°</span>
-    </div>
-  </div>
-  <div class="weekly-row">
-    <span class="weekly-day">수</span>
-    <span class="weekly-date">4/23</span>
-    <span class="weekly-icon">☀️</span>
-    <div class="weekly-bar-wrap">
-      <span class="weekly-lo">7°</span>
-      <div class="weekly-bar"><div class="weekly-bar-fill" style="left:2%;width:72%"></div></div>
-      <span class="weekly-hi">23°</span>
-    </div>
-  </div>
-  <div class="weekly-row">
-    <span class="weekly-day">목</span>
-    <span class="weekly-date">4/24</span>
-    <span class="weekly-icon">☀️</span>
-    <div class="weekly-bar-wrap">
-      <span class="weekly-lo">8°</span>
-      <div class="weekly-bar"><div class="weekly-bar-fill" style="left:5%;width:82%"></div></div>
-      <span class="weekly-hi">26°</span>
-    </div>
-  </div>
-  <div class="weekly-row">
-    <span class="weekly-day">금</span>
-    <span class="weekly-date">4/25</span>
-    <span class="weekly-icon">☀️</span>
-    <div class="weekly-bar-wrap">
-      <span class="weekly-lo">10°</span>
-      <div class="weekly-bar"><div class="weekly-bar-fill" style="left:10%;width:75%"></div></div>
-      <span class="weekly-hi">26°</span>
-    </div>
-  </div>
-  <div class="weekly-row">
-    <span class="weekly-day">토</span>
-    <span class="weekly-date">4/26</span>
-    <span class="weekly-icon">⛅</span>
-    <div class="weekly-bar-wrap">
-      <span class="weekly-lo">13°</span>
-      <div class="weekly-bar"><div class="weekly-bar-fill" style="left:22%;width:55%"></div></div>
-      <span class="weekly-hi">24°</span>
-    </div>
-  </div>
-  <div class="weekly-row">
-    <span class="weekly-day">일</span>
-    <span class="weekly-date">4/27</span>
-    <span class="weekly-icon">⛅</span>
-    <div class="weekly-bar-wrap">
-      <span class="weekly-lo">13°</span>
-      <div class="weekly-bar"><div class="weekly-bar-fill" style="left:22%;width:58%"></div></div>
-      <span class="weekly-hi">25°</span>
-    </div>
+<!-- ══ Region: 강원 ══ -->
+<div class="region-section" data-content="gangwon">
+  <div class="city-grid">
+    <div class="city-card"><div class="city-card-top"><span class="city-name">춘천</span><span class="city-icon">☀️</span></div><div class="city-temp">10°</div><div class="city-range"><span class="lo">3°</span> / <span class="hi">20°</span></div><div class="city-condition">맑음 · 일교차 17°</div></div>
+    <div class="city-card"><div class="city-card-top"><span class="city-name">강릉</span><span class="city-icon">☀️</span></div><div class="city-temp">15°</div><div class="city-range"><span class="lo">10°</span> / <span class="hi">21°</span></div><div class="city-condition">맑음</div></div>
   </div>
 </div>
 
-<!-- ══ AIR QUALITY ══ -->
-<div class="card">
-  <div class="card-title"><span class="card-title-icon">😷</span> 대기질</div>
-  <div class="air-row">
-    <span class="air-label">미세먼지 (PM10)</span>
-    <div class="air-right">
-      <span class="air-value">54 ㎍/㎥</span>
-      <span class="air-badge normal">보통</span>
-    </div>
-  </div>
-  <div class="air-row">
-    <span class="air-label">초미세먼지 (PM2.5)</span>
-    <div class="air-right">
-      <span class="air-value">31 ㎍/㎥</span>
-      <span class="air-badge normal">보통</span>
-    </div>
+<!-- ══ Region: 충청 ══ -->
+<div class="region-section" data-content="chungcheong">
+  <div class="city-grid">
+    <div class="city-card"><div class="city-card-top"><span class="city-name">대전</span><span class="city-icon">☀️</span></div><div class="city-temp">12°</div><div class="city-range"><span class="lo">4°</span> / <span class="hi">20°</span></div><div class="city-condition">맑음 · 일교차 16°</div></div>
+    <div class="city-card"><div class="city-card-top"><span class="city-name">청주</span><span class="city-icon">☀️</span></div><div class="city-temp">12°</div><div class="city-range"><span class="lo">4°</span> / <span class="hi">21°</span></div><div class="city-condition">맑음 · 일교차 17°</div></div>
   </div>
 </div>
 
-<!-- ══ INFO GRID ══ -->
-<div class="info-grid-wrap">
-  <div class="info-grid">
-    <div class="info-box">
-      <div class="info-box-label">💧 습도</div>
-      <div class="info-box-value">52<span class="info-box-unit">%</span></div>
-      <div class="info-box-sub">보통</div>
-    </div>
-    <div class="info-box">
-      <div class="info-box-label">💨 바람</div>
-      <div class="info-box-value">18.7<span class="info-box-unit">km/h</span></div>
-      <div class="info-box-sub">서풍</div>
-    </div>
-    <div class="info-box">
-      <div class="info-box-label">☀️ 자외선</div>
-      <div class="info-box-value">4<span class="info-box-unit"> 보통</span></div>
-      <div class="info-box-sub">자외선 차단 권장</div>
-    </div>
-    <div class="info-box">
-      <div class="info-box-label">🌡️ 체감온도</div>
-      <div class="info-box-value">12<span class="info-box-unit">°</span></div>
-      <div class="info-box-sub">실제보다 서늘</div>
-    </div>
+<!-- ══ Region: 호남 ══ -->
+<div class="region-section" data-content="honam">
+  <div class="city-grid">
+    <div class="city-card"><div class="city-card-top"><span class="city-name">전주</span><span class="city-icon">☀️</span></div><div class="city-temp">12°</div><div class="city-range"><span class="lo">5°</span> / <span class="hi">20°</span></div><div class="city-condition">맑음 · 일교차 15°</div></div>
+    <div class="city-card"><div class="city-card-top"><span class="city-name">광주</span><span class="city-icon">☀️</span></div><div class="city-temp">13°</div><div class="city-range"><span class="lo">5°</span> / <span class="hi">22°</span></div><div class="city-condition">맑음 · 일교차 17°</div></div>
+    <div class="city-card"><div class="city-card-top"><span class="city-name">목포</span><span class="city-icon">☀️</span></div><div class="city-temp">13°</div><div class="city-range"><span class="lo">7°</span> / <span class="hi">19°</span></div><div class="city-condition">맑음</div></div>
   </div>
 </div>
 
-<!-- ══ SUN ══ -->
-<div class="card" style="margin-top:0.8rem;">
-  <div class="card-title"><span class="card-title-icon">🌅</span> 일출 / 일몰</div>
-  <div class="sun-row">
-    <div>
-      <div class="sun-item-icon">🌅</div>
-      <div class="sun-item-label">일출</div>
-      <div class="sun-item-time">05:50</div>
-    </div>
-    <div>
-      <div class="sun-item-icon">🌇</div>
-      <div class="sun-item-label">일몰</div>
-      <div class="sun-item-time">19:12</div>
-    </div>
+<!-- ══ Region: 영남 ══ -->
+<div class="region-section" data-content="yeongnam">
+  <div class="city-grid">
+    <div class="city-card"><div class="city-card-top"><span class="city-name">대구</span><span class="city-icon">☀️</span></div><div class="city-temp">14°</div><div class="city-range"><span class="lo">6°</span> / <span class="hi">23°</span></div><div class="city-condition">맑음 · 일교차 17°</div></div>
+    <div class="city-card"><div class="city-card-top"><span class="city-name">부산</span><span class="city-icon">☀️</span></div><div class="city-temp">15°</div><div class="city-range"><span class="lo">11°</span> / <span class="hi">20°</span></div><div class="city-condition">맑음</div></div>
+    <div class="city-card"><div class="city-card-top"><span class="city-name">울산</span><span class="city-icon">☀️</span></div><div class="city-temp">14°</div><div class="city-range"><span class="lo">9°</span> / <span class="hi">21°</span></div><div class="city-condition">맑음</div></div>
   </div>
 </div>
 
-<div class="weather-footer">
-  데이터: 기상청 · AccuWeather 기반 | Powered by Claude Code<br>
-  마지막 업데이트: 2026-04-21
+<!-- ══ Region: 제주 ══ -->
+<div class="region-section" data-content="jeju">
+  <div class="city-grid">
+    <div class="city-card"><div class="city-card-top"><span class="city-name">제주</span><span class="city-icon">⛅</span></div><div class="city-temp">13°</div><div class="city-range"><span class="lo">8°</span> / <span class="hi">19°</span></div><div class="city-condition">구름많음</div></div>
+  </div>
 </div>
+
+</div><!-- .container -->
+
+<footer class="footer">
+  데이터: 기상청 · AccuWeather 기반 | 마지막 업데이트: 2026-04-21<br>
+  <a href="index.html">📰 데일리 브리핑</a> · Powered by Claude Code
+</footer>
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+  const tabs = document.querySelectorAll('.tab');
+  const sections = document.querySelectorAll('.region-section');
+
+  tabs.forEach(tab => {
+    tab.addEventListener('click', () => {
+      const region = tab.dataset.region;
+      tabs.forEach(t => t.classList.remove('active'));
+      tab.classList.add('active');
+      sections.forEach(s => {
+        s.classList.toggle('active', s.dataset.content === region);
+      });
+    });
+  });
+});
+</script>
 
 </body>
 </html>
