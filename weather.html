@@ -1,0 +1,538 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>날씨 | 서울 | 2026년 4월 21일</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700;900&display=swap');
+
+  :root {
+    --bg: #121212;
+    --card: #1e1e1e;
+    --navy: #ffffff;
+    --navy-light: #e0e0e0;
+    --gold: #FF6B35;
+    --blue: #4FC3F7;
+    --blue-light: #81D4FA;
+    --sky-start: #1a1a1a;
+    --sky-end: #2d2d2d;
+    --text: #e0e0e0;
+    --text-light: #888;
+    --border: #2a2a2a;
+    --good: #4FC3F7;
+    --normal: #66BB6A;
+    --bad: #FF6B35;
+    --sans: 'Noto Sans KR', -apple-system, sans-serif;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    background: var(--bg);
+    font-family: var(--sans);
+    color: var(--text);
+    -webkit-font-smoothing: antialiased;
+    max-width: 480px;
+    margin: 0 auto;
+  }
+
+  /* ── Hero / Current Weather ── */
+  .hero {
+    background: linear-gradient(135deg, #1a1a1a, #2d2d2d);
+    border-bottom: 2px solid var(--gold);
+    color: #fff;
+    padding: 2rem 1.5rem 1.8rem;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    right: -30%;
+    width: 200px;
+    height: 200px;
+    background: rgba(255,255,255,0.06);
+    border-radius: 50%;
+  }
+  .hero-location {
+    font-size: 0.85rem;
+    font-weight: 500;
+    letter-spacing: 0.05em;
+    opacity: 0.8;
+    margin-bottom: 0.3rem;
+  }
+  .hero-date {
+    font-size: 0.75rem;
+    opacity: 0.6;
+    margin-bottom: 1.2rem;
+  }
+  .hero-icon {
+    font-size: 3.5rem;
+    margin-bottom: 0.3rem;
+    filter: drop-shadow(0 2px 8px rgba(0,0,0,0.15));
+  }
+  .hero-temp {
+    font-size: 4.5rem;
+    font-weight: 900;
+    line-height: 1;
+    letter-spacing: -0.04em;
+  }
+  .hero-temp sup {
+    font-size: 2rem;
+    font-weight: 400;
+    vertical-align: super;
+  }
+  .hero-condition {
+    font-size: 1.1rem;
+    font-weight: 500;
+    margin: 0.3rem 0;
+  }
+  .hero-range {
+    font-size: 0.9rem;
+    opacity: 0.75;
+    margin-top: 0.2rem;
+  }
+  .hero-range .hi { color: #FF6B35; font-weight: 700; }
+  .hero-range .lo { color: #4FC3F7; font-weight: 700; }
+  .hero-feels {
+    font-size: 0.78rem;
+    opacity: 0.6;
+    margin-top: 0.5rem;
+  }
+
+  /* ── Cards ── */
+  .card {
+    background: var(--card);
+    border-radius: 14px;
+    margin: 0.8rem 1rem;
+    padding: 1.2rem;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.06);
+  }
+  .card-title {
+    font-size: 0.78rem;
+    font-weight: 700;
+    color: var(--text-light);
+    letter-spacing: 0.04em;
+    margin-bottom: 1rem;
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+  }
+  .card-title-icon {
+    font-size: 0.9rem;
+  }
+
+  /* ── Hourly Forecast ── */
+  .hourly-scroll {
+    display: flex;
+    gap: 0;
+    overflow-x: auto;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+    margin: 0 -0.3rem;
+  }
+  .hourly-scroll::-webkit-scrollbar { display: none; }
+  .hourly-item {
+    flex: 0 0 auto;
+    width: 64px;
+    text-align: center;
+    padding: 0.5rem 0.3rem;
+  }
+  .hourly-item.now {
+    background: rgba(255,107,53,0.15);
+    border-radius: 12px;
+  }
+  .hourly-time {
+    font-size: 0.72rem;
+    color: var(--text-light);
+    margin-bottom: 0.5rem;
+    font-weight: 500;
+  }
+  .hourly-item.now .hourly-time {
+    color: var(--gold);
+    font-weight: 700;
+  }
+  .hourly-icon {
+    font-size: 1.4rem;
+    margin-bottom: 0.4rem;
+  }
+  .hourly-temp {
+    font-size: 0.95rem;
+    font-weight: 700;
+    color: var(--navy);
+  }
+
+  /* ── Weekly Forecast ── */
+  .weekly-row {
+    display: flex;
+    align-items: center;
+    padding: 0.7rem 0;
+    border-bottom: 1px solid var(--border);
+  }
+  .weekly-row:last-child { border-bottom: none; }
+  .weekly-day {
+    width: 36px;
+    font-size: 0.88rem;
+    font-weight: 700;
+    color: var(--navy);
+  }
+  .weekly-date {
+    width: 44px;
+    font-size: 0.75rem;
+    color: var(--text-light);
+  }
+  .weekly-icon {
+    width: 36px;
+    font-size: 1.2rem;
+    text-align: center;
+  }
+  .weekly-bar-wrap {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0 0.8rem;
+  }
+  .weekly-lo {
+    font-size: 0.82rem;
+    color: #4FC3F7;
+    font-weight: 500;
+    width: 28px;
+    text-align: right;
+  }
+  .weekly-bar {
+    flex: 1;
+    height: 5px;
+    background: #e9ecef;
+    border-radius: 3px;
+    position: relative;
+    overflow: hidden;
+  }
+  .weekly-bar-fill {
+    position: absolute;
+    height: 100%;
+    border-radius: 3px;
+    background: linear-gradient(90deg, var(--blue-light), #FF6B35);
+  }
+  .weekly-hi {
+    font-size: 0.82rem;
+    color: #FF6B35;
+    font-weight: 700;
+    width: 28px;
+  }
+
+  /* ── Info Grid ── */
+  .info-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.8rem;
+  }
+  .info-box {
+    background: var(--card);
+    border-radius: 14px;
+    padding: 1rem 1.2rem;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.06);
+  }
+  .info-box-label {
+    font-size: 0.72rem;
+    color: var(--text-light);
+    font-weight: 500;
+    margin-bottom: 0.5rem;
+    display: flex;
+    align-items: center;
+    gap: 0.3rem;
+  }
+  .info-box-value {
+    font-size: 1.5rem;
+    font-weight: 900;
+    color: var(--navy);
+    line-height: 1.2;
+  }
+  .info-box-unit {
+    font-size: 0.75rem;
+    color: var(--text-light);
+    font-weight: 400;
+  }
+  .info-box-sub {
+    font-size: 0.72rem;
+    color: var(--text-light);
+    margin-top: 0.3rem;
+  }
+
+  /* ── Air Quality ── */
+  .air-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.8rem 0;
+    border-bottom: 1px solid var(--border);
+  }
+  .air-row:last-child { border-bottom: none; }
+  .air-label {
+    font-size: 0.85rem;
+    color: var(--text);
+  }
+  .air-right {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+  }
+  .air-value {
+    font-size: 0.85rem;
+    font-weight: 700;
+    color: var(--navy);
+  }
+  .air-badge {
+    font-size: 0.7rem;
+    font-weight: 700;
+    padding: 0.2em 0.6em;
+    border-radius: 10px;
+    color: #fff;
+  }
+  .air-badge.good { background: var(--good); }
+  .air-badge.normal { background: var(--normal); }
+  .air-badge.bad { background: var(--bad); }
+
+  /* ── Sun ── */
+  .sun-row {
+    display: flex;
+    justify-content: space-around;
+    text-align: center;
+  }
+  .sun-item-icon { font-size: 1.5rem; margin-bottom: 0.3rem; }
+  .sun-item-label {
+    font-size: 0.72rem;
+    color: var(--text-light);
+    margin-bottom: 0.15rem;
+  }
+  .sun-item-time {
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: var(--navy);
+  }
+
+  /* ── Footer ── */
+  .weather-footer {
+    text-align: center;
+    padding: 1.5rem 1rem 2.5rem;
+    font-size: 0.7rem;
+    color: var(--text-light);
+  }
+
+  .info-grid-wrap {
+    margin: 0 1rem;
+  }
+
+  .hero-temp {
+    background: linear-gradient(135deg, #fff, #FF6B35);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  @media (min-width: 481px) {
+    body { border-left: 1px solid var(--border); border-right: 1px solid var(--border); }
+  }
+</style>
+</head>
+<body>
+
+<!-- ══ HERO ══ -->
+<div class="hero">
+  <p class="hero-location">📍 서울특별시</p>
+  <p class="hero-date">2026년 4월 21일 (월) 업데이트</p>
+  <div class="hero-icon">☀️</div>
+  <div class="hero-temp">14<sup>°</sup></div>
+  <p class="hero-condition">맑음</p>
+  <p class="hero-range"><span class="lo">10°</span> / <span class="hi">17°</span></p>
+  <p class="hero-feels">체감온도 12°</p>
+</div>
+
+<!-- ══ HOURLY ══ -->
+<div class="card">
+  <div class="card-title"><span class="card-title-icon">🕐</span> 시간대별 예보</div>
+  <div class="hourly-scroll">
+    <div class="hourly-item now">
+      <div class="hourly-time">지금</div>
+      <div class="hourly-icon">☀️</div>
+      <div class="hourly-temp">14°</div>
+    </div>
+    <div class="hourly-item">
+      <div class="hourly-time">06시</div>
+      <div class="hourly-icon">🌅</div>
+      <div class="hourly-temp">10°</div>
+    </div>
+    <div class="hourly-item">
+      <div class="hourly-time">09시</div>
+      <div class="hourly-icon">☀️</div>
+      <div class="hourly-temp">12°</div>
+    </div>
+    <div class="hourly-item">
+      <div class="hourly-time">12시</div>
+      <div class="hourly-icon">☀️</div>
+      <div class="hourly-temp">15°</div>
+    </div>
+    <div class="hourly-item">
+      <div class="hourly-time">15시</div>
+      <div class="hourly-icon">☀️</div>
+      <div class="hourly-temp">17°</div>
+    </div>
+    <div class="hourly-item">
+      <div class="hourly-time">18시</div>
+      <div class="hourly-icon">🌤️</div>
+      <div class="hourly-temp">15°</div>
+    </div>
+    <div class="hourly-item">
+      <div class="hourly-time">21시</div>
+      <div class="hourly-icon">🌙</div>
+      <div class="hourly-temp">12°</div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ WEEKLY ══ -->
+<div class="card">
+  <div class="card-title"><span class="card-title-icon">📅</span> 주간 예보</div>
+  <div class="weekly-row">
+    <span class="weekly-day">오늘</span>
+    <span class="weekly-date">4/21</span>
+    <span class="weekly-icon">☀️</span>
+    <div class="weekly-bar-wrap">
+      <span class="weekly-lo">10°</span>
+      <div class="weekly-bar"><div class="weekly-bar-fill" style="left:10%;width:35%"></div></div>
+      <span class="weekly-hi">17°</span>
+    </div>
+  </div>
+  <div class="weekly-row">
+    <span class="weekly-day">화</span>
+    <span class="weekly-date">4/22</span>
+    <span class="weekly-icon">☀️</span>
+    <div class="weekly-bar-wrap">
+      <span class="weekly-lo">9°</span>
+      <div class="weekly-bar"><div class="weekly-bar-fill" style="left:8%;width:50%"></div></div>
+      <span class="weekly-hi">19°</span>
+    </div>
+  </div>
+  <div class="weekly-row">
+    <span class="weekly-day">수</span>
+    <span class="weekly-date">4/23</span>
+    <span class="weekly-icon">☀️</span>
+    <div class="weekly-bar-wrap">
+      <span class="weekly-lo">7°</span>
+      <div class="weekly-bar"><div class="weekly-bar-fill" style="left:2%;width:72%"></div></div>
+      <span class="weekly-hi">23°</span>
+    </div>
+  </div>
+  <div class="weekly-row">
+    <span class="weekly-day">목</span>
+    <span class="weekly-date">4/24</span>
+    <span class="weekly-icon">☀️</span>
+    <div class="weekly-bar-wrap">
+      <span class="weekly-lo">8°</span>
+      <div class="weekly-bar"><div class="weekly-bar-fill" style="left:5%;width:82%"></div></div>
+      <span class="weekly-hi">26°</span>
+    </div>
+  </div>
+  <div class="weekly-row">
+    <span class="weekly-day">금</span>
+    <span class="weekly-date">4/25</span>
+    <span class="weekly-icon">☀️</span>
+    <div class="weekly-bar-wrap">
+      <span class="weekly-lo">10°</span>
+      <div class="weekly-bar"><div class="weekly-bar-fill" style="left:10%;width:75%"></div></div>
+      <span class="weekly-hi">26°</span>
+    </div>
+  </div>
+  <div class="weekly-row">
+    <span class="weekly-day">토</span>
+    <span class="weekly-date">4/26</span>
+    <span class="weekly-icon">⛅</span>
+    <div class="weekly-bar-wrap">
+      <span class="weekly-lo">13°</span>
+      <div class="weekly-bar"><div class="weekly-bar-fill" style="left:22%;width:55%"></div></div>
+      <span class="weekly-hi">24°</span>
+    </div>
+  </div>
+  <div class="weekly-row">
+    <span class="weekly-day">일</span>
+    <span class="weekly-date">4/27</span>
+    <span class="weekly-icon">⛅</span>
+    <div class="weekly-bar-wrap">
+      <span class="weekly-lo">13°</span>
+      <div class="weekly-bar"><div class="weekly-bar-fill" style="left:22%;width:58%"></div></div>
+      <span class="weekly-hi">25°</span>
+    </div>
+  </div>
+</div>
+
+<!-- ══ AIR QUALITY ══ -->
+<div class="card">
+  <div class="card-title"><span class="card-title-icon">😷</span> 대기질</div>
+  <div class="air-row">
+    <span class="air-label">미세먼지 (PM10)</span>
+    <div class="air-right">
+      <span class="air-value">54 ㎍/㎥</span>
+      <span class="air-badge normal">보통</span>
+    </div>
+  </div>
+  <div class="air-row">
+    <span class="air-label">초미세먼지 (PM2.5)</span>
+    <div class="air-right">
+      <span class="air-value">31 ㎍/㎥</span>
+      <span class="air-badge normal">보통</span>
+    </div>
+  </div>
+</div>
+
+<!-- ══ INFO GRID ══ -->
+<div class="info-grid-wrap">
+  <div class="info-grid">
+    <div class="info-box">
+      <div class="info-box-label">💧 습도</div>
+      <div class="info-box-value">52<span class="info-box-unit">%</span></div>
+      <div class="info-box-sub">보통</div>
+    </div>
+    <div class="info-box">
+      <div class="info-box-label">💨 바람</div>
+      <div class="info-box-value">18.7<span class="info-box-unit">km/h</span></div>
+      <div class="info-box-sub">서풍</div>
+    </div>
+    <div class="info-box">
+      <div class="info-box-label">☀️ 자외선</div>
+      <div class="info-box-value">4<span class="info-box-unit"> 보통</span></div>
+      <div class="info-box-sub">자외선 차단 권장</div>
+    </div>
+    <div class="info-box">
+      <div class="info-box-label">🌡️ 체감온도</div>
+      <div class="info-box-value">12<span class="info-box-unit">°</span></div>
+      <div class="info-box-sub">실제보다 서늘</div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ SUN ══ -->
+<div class="card" style="margin-top:0.8rem;">
+  <div class="card-title"><span class="card-title-icon">🌅</span> 일출 / 일몰</div>
+  <div class="sun-row">
+    <div>
+      <div class="sun-item-icon">🌅</div>
+      <div class="sun-item-label">일출</div>
+      <div class="sun-item-time">05:50</div>
+    </div>
+    <div>
+      <div class="sun-item-icon">🌇</div>
+      <div class="sun-item-label">일몰</div>
+      <div class="sun-item-time">19:12</div>
+    </div>
+  </div>
+</div>
+
+<div class="weather-footer">
+  데이터: 기상청 · AccuWeather 기반 | Powered by Claude Code<br>
+  마지막 업데이트: 2026-04-21
+</div>
+
+</body>
+</html>
